@@ -1,1482 +1,2049 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Grant Intelligence Report — April 12, 2026</title>
-  <style>
-    :root {
-      --bg: #f4f6fb;
-      --card: #ffffff;
-      --header: #1a2e4a;
-      --accent: #2563eb;
-      --accent2: #059669;
-      --accent3: #d97706;
-      --accent4: #7c3aed;
-      --danger: #dc2626;
-      --text: #1e293b;
-      --muted: #64748b;
-      --border: #e2e8f0;
-      --tag-bg: #eff6ff;
-      --tag-text: #1d4ed8;
-      --shadow: 0 2px 12px rgba(0,0,0,0.07);
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grant Intelligence Report — India NGOs | April 13, 2026</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+        :root {
+            --navy: #1a2e4a;
+            --accent-blue: #2563eb;
+            --success-green: #059669;
+            --urgent-red: #dc2626;
+            --light-gray: #f3f4f6;
+            --white: #ffffff;
+            --border-color: #e5e7eb;
+        }
 
-    body {
-      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.6;
-    }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: var(--light-gray);
+            color: #1f2937;
+            line-height: 1.6;
+        }
 
-    /* ── HEADER ── */
-    header {
-      background: var(--header);
-      color: white;
-      padding: 24px 32px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 12px;
-    }
-    .header-left h1 { font-size: 1.6rem; font-weight: 700; letter-spacing: -0.02em; }
-    .header-left p { font-size: 0.85rem; color: #94a3b8; margin-top: 2px; }
-    .header-right { display: flex; gap: 8px; flex-wrap: wrap; }
-    .badge-pill {
-      background: rgba(255,255,255,0.12);
-      border: 1px solid rgba(255,255,255,0.2);
-      border-radius: 20px;
-      padding: 4px 12px;
-      font-size: 0.75rem;
-      color: #e2e8f0;
-    }
+        /* Header */
+        header {
+            background-color: var(--navy);
+            color: var(--white);
+            padding: 2rem 1rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
 
-    /* ── SUMMARY STRIP ── */
-    .summary-strip {
-      background: white;
-      border-bottom: 1px solid var(--border);
-      padding: 16px 32px;
-      display: flex;
-      gap: 24px;
-      flex-wrap: wrap;
-      align-items: center;
-    }
-    .stat { text-align: center; }
-    .stat .num { font-size: 1.6rem; font-weight: 700; color: var(--accent); }
-    .stat .lbl { font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
-    .divider { width: 1px; height: 40px; background: var(--border); }
-    .last-updated { margin-left: auto; font-size: 0.78rem; color: var(--muted); }
+        .header-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
 
-    /* ── FILTERS ── */
-    .filters {
-      padding: 16px 32px;
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-      align-items: center;
-    }
-    .filters label { font-size: 0.8rem; color: var(--muted); font-weight: 600; }
-    .filter-btn {
-      border: 1.5px solid var(--border);
-      background: white;
-      border-radius: 20px;
-      padding: 5px 14px;
-      font-size: 0.78rem;
-      cursor: pointer;
-      transition: all 0.15s;
-      color: var(--text);
-    }
-    .filter-btn.active, .filter-btn:hover {
-      border-color: var(--accent);
-      background: var(--tag-bg);
-      color: var(--accent);
-    }
-    .search-box {
-      margin-left: auto;
-      border: 1.5px solid var(--border);
-      background: white;
-      border-radius: 8px;
-      padding: 6px 14px;
-      font-size: 0.82rem;
-      width: 220px;
-      outline: none;
-      transition: border-color 0.15s;
-    }
-    .search-box:focus { border-color: var(--accent); }
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
 
-    /* ── SECTION ── */
-    .section {
-      padding: 0 32px 32px;
-    }
-    .section-header {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 16px;
-      padding: 14px 0 10px;
-      border-bottom: 2px solid var(--border);
-    }
-    .section-icon {
-      width: 32px; height: 32px;
-      border-radius: 8px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.1rem;
-    }
-    .section-title { font-size: 1.05rem; font-weight: 700; }
-    .section-count {
-      background: var(--tag-bg);
-      color: var(--accent);
-      border-radius: 12px;
-      padding: 2px 10px;
-      font-size: 0.75rem;
-      font-weight: 600;
-    }
-    .section-toggle {
-      margin-left: auto;
-      cursor: pointer;
-      color: var(--muted);
-      font-size: 0.78rem;
-      user-select: none;
-    }
+        h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin: 0;
+        }
 
-    /* ── GRANT CARDS GRID ── */
-    .cards-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
-      gap: 16px;
-    }
+        .header-meta {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
 
-    /* ── GRANT CARD ── */
-    .card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 18px 20px;
-      box-shadow: var(--shadow);
-      transition: box-shadow 0.2s;
-      position: relative;
-    }
-    .card:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.11); }
+        .warning-badge {
+            background-color: #fbbf24;
+            color: #78350f;
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
 
-    .card-top {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 8px;
-      margin-bottom: 10px;
-    }
-    .card-title {
-      font-size: 0.95rem;
-      font-weight: 700;
-      color: var(--text);
-      line-height: 1.35;
-      flex: 1;
-    }
-    .card-title[contenteditable="true"]:focus {
-      outline: 2px dashed var(--accent);
-      border-radius: 4px;
-      padding: 2px 4px;
-    }
+        /* Edit Mode Bar */
+        .edit-mode-bar {
+            background-color: #fbbf24;
+            color: #78350f;
+            padding: 0.75rem 1rem;
+            text-align: center;
+            font-weight: 600;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+        }
 
-    .status-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      border-radius: 12px;
-      padding: 3px 10px;
-      font-size: 0.7rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      white-space: nowrap;
-      flex-shrink: 0;
-    }
-    .status-new { background: #dcfce7; color: #166534; }
-    .status-open { background: #dbeafe; color: #1e40af; }
-    .status-closing { background: #fef3c7; color: #92400e; }
-    .status-upcoming { background: #f3e8ff; color: #6b21a8; }
+        .edit-mode-bar.hidden {
+            display: none;
+        }
 
-    .card-meta {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-      margin-bottom: 12px;
-    }
-    .meta-item { }
-    .meta-label {
-      font-size: 0.66rem;
-      text-transform: uppercase;
-      letter-spacing: 0.07em;
-      color: var(--muted);
-      font-weight: 600;
-      margin-bottom: 2px;
-    }
-    .meta-value {
-      font-size: 0.82rem;
-      font-weight: 600;
-      color: var(--text);
-    }
-    .meta-value[contenteditable="true"]:focus {
-      outline: 2px dashed var(--accent);
-      border-radius: 3px;
-      padding: 1px 4px;
-    }
-    .meta-value.amount { color: var(--accent2); font-size: 0.9rem; }
-    .meta-value.deadline { color: var(--danger); }
+        .toggle-edit-btn {
+            background-color: #fcd34d;
+            border: 1px solid #f59e0b;
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.2s;
+        }
 
-    .eligibility-block {
-      background: #f8fafc;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 10px 12px;
-      margin-bottom: 12px;
-    }
-    .eligibility-label {
-      font-size: 0.66rem;
-      text-transform: uppercase;
-      letter-spacing: 0.07em;
-      color: var(--muted);
-      font-weight: 600;
-      margin-bottom: 4px;
-    }
-    .eligibility-text {
-      font-size: 0.79rem;
-      color: var(--text);
-      line-height: 1.5;
-    }
-    .eligibility-text[contenteditable="true"]:focus {
-      outline: 2px dashed var(--accent);
-      border-radius: 3px;
-    }
+        .toggle-edit-btn:hover {
+            background-color: #fbbf24;
+        }
 
-    .causes-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-bottom: 12px;
-    }
-    .cause-tag {
-      background: var(--tag-bg);
-      color: var(--tag-text);
-      border-radius: 6px;
-      padding: 3px 9px;
-      font-size: 0.71rem;
-      font-weight: 600;
-    }
-    .cause-tag[contenteditable="true"]:focus {
-      outline: 2px dashed var(--accent);
-    }
+        /* Summary Strip */
+        .summary-strip {
+            background-color: var(--white);
+            border-bottom: 2px solid var(--border-color);
+            padding: 1.5rem 1rem;
+        }
 
-    .card-footer {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 8px;
-      padding-top: 10px;
-      border-top: 1px solid var(--border);
-    }
-    .source-link {
-      font-size: 0.74rem;
-      color: var(--accent);
-      text-decoration: none;
-      font-weight: 600;
-    }
-    .source-link:hover { text-decoration: underline; }
-    .edit-icon {
-      font-size: 0.72rem;
-      color: var(--muted);
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 4px;
-    }
-    .edit-icon:hover { color: var(--accent); }
+        .summary-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
 
-    /* ── EDITABLE MODE INDICATOR ── */
-    .edit-mode-bar {
-      background: #fefce8;
-      border-bottom: 1px solid #fde68a;
-      padding: 8px 32px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 0.78rem;
-      color: #92400e;
-    }
-    .edit-toggle-btn {
-      background: var(--accent);
-      color: white;
-      border: none;
-      border-radius: 6px;
-      padding: 5px 14px;
-      font-size: 0.78rem;
-      cursor: pointer;
-      font-weight: 600;
-    }
-    .edit-toggle-btn.off {
-      background: var(--accent2);
-    }
+        .summary-item {
+            text-align: center;
+        }
 
-    /* ── ADD GRANT BUTTON ── */
-    .add-card-btn {
-      border: 2px dashed var(--border);
-      background: transparent;
-      border-radius: 12px;
-      padding: 32px;
-      text-align: center;
-      cursor: pointer;
-      color: var(--muted);
-      font-size: 0.82rem;
-      transition: all 0.15s;
-      width: 100%;
-    }
-    .add-card-btn:hover {
-      border-color: var(--accent);
-      color: var(--accent);
-      background: var(--tag-bg);
-    }
+        .summary-value {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--accent-blue);
+            margin-bottom: 0.25rem;
+        }
 
-    /* ── FOOTNOTE / DISCLAIMER ── */
-    footer {
-      background: var(--header);
-      color: #94a3b8;
-      padding: 24px 32px;
-      font-size: 0.75rem;
-      margin-top: 40px;
-    }
-    footer a { color: #60a5fa; }
-    footer .footer-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 24px;
-    }
-    footer h4 { color: #cbd5e1; margin-bottom: 8px; font-size: 0.8rem; }
+        .summary-label {
+            font-size: 0.9rem;
+            color: #6b7280;
+            font-weight: 500;
+        }
 
-    @media (max-width: 640px) {
-      header, .summary-strip, .filters, .section { padding-left: 16px; padding-right: 16px; }
-      .cards-grid { grid-template-columns: 1fr; }
-      footer .footer-grid { grid-template-columns: 1fr; }
-    }
+        /* Filter & Search Bar */
+        .controls-bar {
+            background-color: var(--white);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1.5rem 1rem;
+            sticky: position;
+            top: 0;
+            z-index: 10;
+        }
 
-    /* ── GUIDANCE PANEL ── */
-    .guidance-toggle {
-      background: none;
-      border: 1.5px dashed var(--border);
-      border-radius: 8px;
-      padding: 8px 14px;
-      font-size: 0.76rem;
-      cursor: pointer;
-      color: var(--muted);
-      width: 100%;
-      text-align: left;
-      margin-top: 10px;
-      transition: all 0.15s;
-    }
-    .guidance-toggle:hover { border-color: var(--accent); color: var(--accent); background: var(--tag-bg); }
-    .guidance-panel {
-      display: none;
-      background: #f8fafc;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 14px 16px;
-      margin-top: 8px;
-    }
-    .guidance-section { margin-bottom: 12px; }
-    .guidance-section:last-child { margin-bottom: 0; }
-    .guidance-heading {
-      font-size: 0.65rem;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--muted);
-      font-weight: 700;
-      margin-bottom: 6px;
-      display: flex;
-      align-items: center;
-      gap: 5px;
-    }
-    .guidance-steps { list-style: none; padding: 0; margin: 0; }
-    .guidance-steps li {
-      font-size: 0.78rem;
-      color: var(--text);
-      padding: 3px 0 3px 18px;
-      position: relative;
-      line-height: 1.5;
-    }
-    .guidance-steps li::before { content: "→"; position: absolute; left: 0; color: var(--accent2); font-weight: 700; }
-    .learn-links { display: flex; flex-direction: column; gap: 5px; }
-    .learn-link { font-size: 0.76rem; color: var(--accent); text-decoration: none; }
-    .learn-link:hover { text-decoration: underline; }
-    .benchmark-list { display: flex; flex-direction: column; gap: 7px; }
-    .benchmark-item { border-left: 3px solid var(--accent4); padding-left: 8px; }
-    .benchmark-name { font-size: 0.78rem; font-weight: 700; color: var(--text); }
-    .benchmark-desc { font-size: 0.72rem; color: var(--muted); line-height: 1.4; }
+        .controls-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            align-items: center;
+        }
 
-    @media print {
-      .filters, .edit-mode-bar, .add-card-btn, .guidance-toggle { display: none; }
-      .guidance-panel { display: block !important; }
-      .card { break-inside: avoid; }
-    }
-  </style>
+        .search-box {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 0.375rem;
+            font-size: 1rem;
+        }
+
+        .filter-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .filter-btn {
+            background-color: var(--light-gray);
+            border: 1px solid var(--border-color);
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .filter-btn:hover {
+            background-color: var(--accent-blue);
+            color: var(--white);
+            border-color: var(--accent-blue);
+        }
+
+        .filter-btn.active {
+            background-color: var(--accent-blue);
+            color: var(--white);
+            border-color: var(--accent-blue);
+        }
+
+        /* Main Content */
+        .main-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        /* Section Headers */
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--accent-blue);
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .section-header:hover {
+            opacity: 0.8;
+        }
+
+        .section-toggle {
+            font-size: 1.5rem;
+            transition: transform 0.2s;
+        }
+
+        .section-toggle.collapsed {
+            transform: rotate(-90deg);
+        }
+
+        .section-header h2 {
+            flex: 1;
+            color: var(--navy);
+            font-size: 1.5rem;
+            margin: 0;
+        }
+
+        .section-count {
+            background-color: var(--accent-blue);
+            color: var(--white);
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        /* Cards Grid */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .section.collapsed .cards-grid {
+            display: none;
+        }
+
+        /* Card Styles */
+        .grant-card {
+            background-color: var(--white);
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            transition: box-shadow 0.2s, transform 0.2s;
+            border-left: 4px solid var(--accent-blue);
+            position: relative;
+        }
+
+        .grant-card:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .card-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--navy);
+            margin: 0;
+            flex: 1;
+        }
+
+        .card-title[contenteditable="true"] {
+            padding: 0.25rem;
+            border-radius: 0.25rem;
+        }
+
+        .card-title[contenteditable="true"]:focus {
+            background-color: #fffbeb;
+            outline: 2px solid var(--accent-blue);
+        }
+
+        .status-badge {
+            padding: 0.35rem 0.75rem;
+            border-radius: 0.25rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .status-new {
+            background-color: #dcfce7;
+            color: #166534;
+        }
+
+        .status-open {
+            background-color: #dbeafe;
+            color: #1e40af;
+        }
+
+        .status-closing {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+
+        .status-upcoming {
+            background-color: #f3e8ff;
+            color: #6b21a8;
+        }
+
+        .card-meta {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .meta-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .meta-label {
+            color: #6b7280;
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+        }
+
+        .meta-value {
+            color: var(--navy);
+            font-weight: 500;
+        }
+
+        .meta-value.amount {
+            color: var(--success-green);
+            font-weight: 700;
+        }
+
+        .meta-value.deadline {
+            color: var(--urgent-red);
+            font-weight: 700;
+        }
+
+        .meta-value.deadline.urgent {
+            font-size: 1rem;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .card-description {
+            margin: 1rem 0;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #374151;
+        }
+
+        .card-description[contenteditable="true"] {
+            padding: 0.5rem;
+            border-radius: 0.25rem;
+        }
+
+        .card-description[contenteditable="true"]:focus {
+            background-color: #fffbeb;
+            outline: 2px solid var(--accent-blue);
+        }
+
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin: 1rem 0;
+        }
+
+        .tag {
+            background-color: var(--light-gray);
+            color: #374151;
+            padding: 0.35rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .guidance-toggle {
+            background-color: var(--accent-blue);
+            color: var(--white);
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+            cursor: pointer;
+            font-weight: 600;
+            margin-top: 1rem;
+            width: 100%;
+            text-align: left;
+            transition: background-color 0.2s;
+        }
+
+        .guidance-toggle:hover {
+            background-color: #1d4ed8;
+        }
+
+        .guidance-panel {
+            display: none;
+            background-color: #f9fafb;
+            border: 1px solid var(--border-color);
+            border-radius: 0.375rem;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+
+        .guidance-panel.open {
+            display: block;
+        }
+
+        .guidance-section {
+            margin-bottom: 1rem;
+        }
+
+        .guidance-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .guidance-section-title {
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .guidance-steps {
+            list-style: none;
+            padding: 0;
+        }
+
+        .guidance-steps li {
+            padding: 0.35rem 0;
+            color: #374151;
+            font-size: 0.9rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .guidance-steps li:before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: var(--success-green);
+            font-weight: 700;
+        }
+
+        .learn-links {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .learn-links a {
+            color: var(--accent-blue);
+            text-decoration: none;
+            font-size: 0.9rem;
+            word-break: break-word;
+        }
+
+        .learn-links a:hover {
+            text-decoration: underline;
+        }
+
+        .benchmark-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .benchmark-item {
+            background-color: var(--white);
+            border: 1px solid var(--border-color);
+            border-radius: 0.375rem;
+            padding: 0.75rem;
+            font-size: 0.9rem;
+        }
+
+        .benchmark-name {
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 0.25rem;
+        }
+
+        .benchmark-desc {
+            color: #6b7280;
+            font-size: 0.85rem;
+            line-height: 1.5;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--navy);
+            color: var(--white);
+            padding: 2rem 1rem;
+            margin-top: 3rem;
+        }
+
+        .footer-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .footer-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .footer-title {
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            font-size: 0.95rem;
+        }
+
+        .footer-content {
+            font-size: 0.85rem;
+            line-height: 1.8;
+            opacity: 0.9;
+        }
+
+        .footer-content ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-content li {
+            padding: 0.35rem 0;
+        }
+
+        .disclaimer {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-left: 3px solid #fbbf24;
+            padding: 1rem;
+            border-radius: 0.375rem;
+            font-size: 0.85rem;
+            margin-top: 1.5rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            .header-top {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .controls-container {
+                flex-direction: column;
+            }
+
+            .search-box {
+                min-width: 100%;
+            }
+
+            .filter-buttons {
+                width: 100%;
+            }
+
+            .summary-container {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .card-meta {
+                grid-template-columns: 1fr;
+            }
+
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Add Grant Button */
+        .add-grant-btn {
+            background-color: var(--success-green);
+            color: var(--white);
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.375rem;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 0.9rem;
+            transition: background-color 0.2s;
+            margin-top: 1rem;
+        }
+
+        .add-grant-btn:hover {
+            background-color: #047857;
+        }
+    </style>
 </head>
 <body>
 
-<!-- ══ HEADER ══ -->
-<header>
-  <div class="header-left">
-    <h1>🌏 Grant Intelligence Report</h1>
-    <p>Daily funding landscape scan · India &amp; South Asia · All sectors</p>
-  </div>
-  <div class="header-right">
-    <span class="badge-pill">📅 April 12, 2026</span>
-    <span class="badge-pill">🔍 Auto-refreshed daily</span>
-    <span class="badge-pill">✏️ Editable</span>
-  </div>
-</header>
-
-<!-- ══ EDIT MODE BAR ══ -->
-<div class="edit-mode-bar" id="editBar">
-  ✏️ <strong>Edit Mode is ON</strong> — click any field (title, amount, deadline, eligibility, causes) to edit it directly. Your changes stay until the page is refreshed.
-  <button class="edit-toggle-btn off" onclick="toggleEdit()">Disable Editing</button>
-</div>
-
-<!-- ══ SUMMARY STRIP ══ -->
-<div class="summary-strip">
-  <div class="stat"><div class="num" id="totalCount">13</div><div class="lbl">Opportunities</div></div>
-  <div class="divider"></div>
-  <div class="stat"><div class="num" style="color:#dc2626" id="closingCount">3</div><div class="lbl">Closing Soon</div></div>
-  <div class="divider"></div>
-  <div class="stat"><div class="num" style="color:#059669" id="newCount">5</div><div class="lbl">Newly Listed</div></div>
-  <div class="divider"></div>
-  <div class="stat"><div class="num" style="color:#7c3aed">₹500Cr+</div><div class="lbl">Est. Total Pool</div></div>
-  <div class="divider"></div>
-  <div class="stat"><div class="num" style="color:#d97706">4</div><div class="lbl">Source Types</div></div>
-  <span class="last-updated">Last updated: April 12, 2026 · 08:00 IST</span>
-</div>
-
-<!-- ══ FILTERS ══ -->
-<div class="filters">
-  <span class="filter-btn active" onclick="filterAll(this)">All</span>
-  <span class="filter-btn" onclick="filterSection('gov', this)">🏛️ Government</span>
-  <span class="filter-btn" onclick="filterSection('found', this)">🤝 Foundations</span>
-  <span class="filter-btn" onclick="filterSection('un', this)">🌐 UN &amp; Multilateral</span>
-  <span class="filter-btn" onclick="filterSection('impact', this)">📈 Impact Investing</span>
-  <input class="search-box" type="text" placeholder="🔍 Search grants..." oninput="searchGrants(this.value)" />
-</div>
-
-
-<!-- ══════════════════════════════════════════
-     SECTION 1: GOVERNMENT GRANTS & SCHEMES
-═══════════════════════════════════════════ -->
-<div class="section" data-section="gov">
-  <div class="section-header">
-    <div class="section-icon" style="background:#dbeafe">🏛️</div>
-    <span class="section-title">Government Grants &amp; Schemes</span>
-    <span class="section-count">5 opportunities</span>
-    <span class="section-toggle" onclick="toggleSection(this)">▲ Collapse</span>
-  </div>
-  <div class="cards-grid section-body">
-
-    <!-- CARD 1 -->
-    <div class="card" data-tags="tribal education health welfare">
-      <div class="card-top">
-        <div class="card-title" contenteditable="true">Ministry of Tribal Affairs — NGO Proposals FY 2026-27</div>
-        <span class="status-badge status-closing">⏰ Closing Soon</span>
-      </div>
-      <div class="card-meta">
-        <div class="meta-item"><div class="meta-label">Funding Amount</div><div class="meta-value amount" contenteditable="true">₹10L – ₹2Cr per project</div></div>
-        <div class="meta-item"><div class="meta-label">Deadline</div><div class="meta-value deadline" contenteditable="true">April 30, 2026</div></div>
-        <div class="meta-item"><div class="meta-label">Funding Type</div><div class="meta-value" contenteditable="true">Grant-in-Aid</div></div>
-        <div class="meta-item"><div class="meta-label">Application Via</div><div class="meta-value" contenteditable="true">ngo.tribal.gov.in</div></div>
-      </div>
-      <div class="eligibility-block">
-        <div class="eligibility-label">Eligibility Requirements</div>
-        <div class="eligibility-text" contenteditable="true">Registered NGOs/Trusts/Societies working with tribal communities. Must have FCRA (for foreign-origin orgs) or Darpan registration. Projects must relate to tribal welfare, education complexes, vocational training, or Particularly Vulnerable Tribal Groups (PVTGs). 3-year operational track record preferred.</div>
-      </div>
-      <div class="causes-row">
-        <span class="cause-tag" contenteditable="true">Tribal Welfare</span>
-        <span class="cause-tag" contenteditable="true">Education</span>
-        <span class="cause-tag" contenteditable="true">Vocational Training</span>
-        <span class="cause-tag" contenteditable="true">PVTGs</span>
-      </div>
-      <button class="guidance-toggle" onclick="toggleGuidance(this)">🎯 Show Guidance, Links &amp; Benchmarks ▼</button>
-      <div class="guidance-panel">
-        <div class="guidance-section">
-          <div class="guidance-heading">✅ Recommended Next Steps</div>
-          <ul class="guidance-steps">
-            <li>Register your NGO on <strong>NGO-DARPAN</strong> (ngodarpan.gov.in) — mandatory before portal login</li>
-            <li>Log in to <strong>ngo.tribal.gov.in</strong> immediately — the April 1–30 window is the only open cycle for FY 2026-27 ongoing projects</li>
-            <li>Download the scheme guidelines PDF from tribal.nic.in and match your project to "Grant-in-Aid to VOs for Welfare of STs" or PVTG scheme</li>
-            <li>Prepare 3 years of audited accounts, registration certificate, and a project proposal with measurable tribal welfare outcomes</li>
-          </ul>
-        </div>
-        <div class="guidance-section">
-          <div class="guidance-heading">🔗 Learn More</div>
-          <div class="learn-links">
-            <a class="learn-link" href="https://ngo.tribal.gov.in" target="_blank">→ ngo.tribal.gov.in — Apply here (open until April 30)</a>
-            <a class="learn-link" href="https://tribal.nic.in/downloads/NGO/NGO-GIAtoVOsGuidelines.pdf" target="_blank">→ Official Grant-in-Aid Guidelines PDF (tribal.nic.in)</a>
-            <a class="learn-link" href="https://www.pib.gov.in/Pressreleaseshare.aspx?PRID=1697139" target="_blank">→ PIB: Funds Allocated to NGOs for Tribal Welfare (context &amp; scale)</a>
-          </div>
-        </div>
-        <div class="guidance-section">
-          <div class="guidance-heading">🏆 Benchmark NGOs to Study</div>
-          <div class="benchmark-list">
-            <div class="benchmark-item">
-              <div class="benchmark-name">NEEDS (Network for Enterprise Enhancement &amp; Development Support) — Jharkhand</div>
-              <div class="benchmark-desc">Long-standing tribal welfare org with strong PVTG programmes; consistently funded by MoTA. Study their project proposal structures and M&amp;E frameworks.</div>
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <div class="header-top">
+                <div>
+                    <h1>Grant Intelligence Report</h1>
+                    <p class="header-meta">India NGOs · April 13, 2026 · Last updated: April 13, 2026 · 07:05 IST</p>
+                </div>
+                <div class="warning-badge">⚠️ 2 opportunities close THIS WEEK</div>
             </div>
-            <div class="benchmark-item">
-              <div class="benchmark-name">Agragamee — Odisha</div>
-              <div class="benchmark-desc">Works with tribal communities in Odisha on livelihood, education, and natural resource management. Benchmark for community-led tribal development models.</div>
-            </div>
-            <div class="benchmark-item">
-              <div class="benchmark-name">Lok Biradari Prakalp — Maharashtra</div>
-              <div class="benchmark-desc">Founded by Baba Amte; operates in Hemalkasa tribal area. Known for health and education delivery in remote tribal belts — a model for integrated tribal welfare proposals.</div>
-            </div>
-          </div>
         </div>
-      </div>
-      <div class="card-footer">
-        <a class="source-link" href="https://ngo.tribal.gov.in" target="_blank">🔗 ngo.tribal.gov.in</a>
-        <span class="edit-icon">✏️ All fields editable</span>
-      </div>
+    </header>
+
+    <!-- Edit Mode Bar -->
+    <div class="edit-mode-bar" id="editModeBar">
+        ✏️ Editing is ON
+        <button class="toggle-edit-btn" onclick="toggleEdit()">Turn OFF</button>
     </div>
 
-    <!-- CARD 2 -->
-    <div class="card" data-tags="social justice disability women marginalised">
-      <div class="card-top">
-        <div class="card-title" contenteditable="true">Ministry of Social Justice &amp; Empowerment — eAnudaan Grant-in-Aid</div>
-        <span class="status-badge status-open">✅ Open</span>
-      </div>
-      <div class="card-meta">
-        <div class="meta-item"><div class="meta-label">Funding Amount</div><div class="meta-value amount" contenteditable="true">Variable (scheme-based)</div></div>
-        <div class="meta-item"><div class="meta-label">Deadline</div><div class="meta-value" contenteditable="true">Rolling / Scheme-specific</div></div>
-        <div class="meta-item"><div class="meta-label">Funding Type</div><div class="meta-value" contenteditable="true">Central Sector Grant</div></div>
-        <div class="meta-item"><div class="meta-label">Application Via</div><div class="meta-value" contenteditable="true">grants-msje.gov.in</div></div>
-      </div>
-      <div class="eligibility-block">
-        <div class="eligibility-label">Eligibility Requirements</div>
-        <div class="eligibility-text" contenteditable="true">NGOs registered as Trust, Society, or Section 8 Company. Must have 12A &amp; 80G certifications. Work must focus on welfare of SC/OBC/disabled persons, senior citizens, or transgender community. DARPAN registration mandatory. Minimum 3 years of existence with audited accounts.</div>
-      </div>
-      <div class="causes-row">
-        <span class="cause-tag" contenteditable="true">Disability Rights</span>
-        <span class="cause-tag" contenteditable="true">Gender Justice</span>
-        <span class="cause-tag" contenteditable="true">SC/OBC Welfare</span>
-        <span class="cause-tag" contenteditable="true">Senior Citizens</span>
-      </div>
-      <button class="guidance-toggle" onclick="toggleGuidance(this)">🎯 Show Guidance, Links &amp; Benchmarks ▼</button>
-      <div class="guidance-panel">
-        <div class="guidance-section">
-          <div class="guidance-heading">✅ Recommended Next Steps</div>
-          <ul class="guidance-steps">
-            <li>Register on <strong>NGO-DARPAN</strong> and link your Aadhaar-verified trustees — required before eAnudaan login</li>
-            <li>Access <strong>grants-msje.gov.in</strong>, select your relevant scheme (e.g., Deendayal Disabled Rehabilitation Scheme, NSAP, etc.) and review scheme-specific guidelines</li>
-            <li>Prepare Utilization Certificates (UCs) from any prior government grants — MSJE requires clean UC compliance before new applications</li>
-            <li>Download the latest scheme-wise eligibility circular from socialjustice.gov.in before drafting your proposal</li>
-          </ul>
-        </div>
-        <div class="guidance-section">
-          <div class="guidance-heading">🔗 Learn More</div>
-          <div class="learn-links">
-            <a class="learn-link" href="https://grants-msje.gov.in" target="_blank">→ grants-msje.gov.in — eAnudaan Application Portal</a>
-            <a class="learn-link" href="https://socialjustice.gov.in/common/68585" target="_blank">→ MSJE NGO/VO Assistance Guidelines (socialjustice.gov.in)</a>
-            <a class="learn-link" href="https://ngodarpan.gov.in" target="_blank">→ NGO-DARPAN Registration Portal (mandatory pre-step)</a>
-          </div>
-        </div>
-        <div class="guidance-section">
-          <div class="guidance-heading">🏆 Benchmark NGOs to Study</div>
-          <div class="benchmark-list">
-            <div class="benchmark-item">
-              <div class="benchmark-name">National Association for the Blind (NAB) India — Pan-India</div>
-              <div class="benchmark-desc">Veteran MSJE grantee for disability rehabilitation. Study their grant proposal format, annual reporting structure, and UC submission process as a compliance benchmark.</div>
+    <!-- Summary Strip -->
+    <div class="summary-strip">
+        <div class="summary-container">
+            <div class="summary-item">
+                <div class="summary-value">17</div>
+                <div class="summary-label">Active Opportunities</div>
             </div>
-            <div class="benchmark-item">
-              <div class="benchmark-name">Samarthan — Centre for Development Support, Madhya Pradesh</div>
-              <div class="benchmark-desc">Strong track record with social justice ministry schemes for marginalised communities. Known for rigorous M&amp;E and government interface — good model for your proposal narrative.</div>
+            <div class="summary-item">
+                <div class="summary-value">5</div>
+                <div class="summary-label">Closing Soon</div>
             </div>
-            <div class="benchmark-item">
-              <div class="benchmark-name">HelpAge India — Pan-India</div>
-              <div class="benchmark-desc">Major recipient of MSJE senior citizen welfare grants. Benchmark their multi-state delivery model and government partnership agreements for older persons' programmes.</div>
+            <div class="summary-item">
+                <div class="summary-value">6</div>
+                <div class="summary-label">Newly Listed</div>
             </div>
-          </div>
+            <div class="summary-item">
+                <div class="summary-value">₹600Cr+</div>
+                <div class="summary-label">Total Pool Value</div>
+            </div>
+            <div class="summary-item">
+                <div class="summary-value">4</div>
+                <div class="summary-label">Source Types</div>
+            </div>
         </div>
-      </div>
-      <div class="card-footer">
-        <a class="source-link" href="https://grants-msje.gov.in" target="_blank">🔗 grants-msje.gov.in</a>
-        <span class="edit-icon">✏️ All fields editable</span>
-      </div>
     </div>
 
-    <!-- CARD 3 -->
-    <div class="card" data-tags="rural agriculture watershed livelihood nabard">
-      <div class="card-top">
-        <div class="card-title" contenteditable="true">NABARD — Rural Development &amp; Watershed Management Grants</div>
-        <span class="status-badge status-open">✅ Open</span>
-      </div>
-      <div class="card-meta">
-        <div class="meta-item"><div class="meta-label">Funding Amount</div><div class="meta-value amount" contenteditable="true">₹5L – ₹50L per project</div></div>
-        <div class="meta-item"><div class="meta-label">Deadline</div><div class="meta-value" contenteditable="true">Quarterly rolling cycles</div></div>
-        <div class="meta-item"><div class="meta-label">Funding Type</div><div class="meta-value" contenteditable="true">Grant + Soft Loan</div></div>
-        <div class="meta-item"><div class="meta-label">Application Via</div><div class="meta-value" contenteditable="true">nabard.org / Regional offices</div></div>
-      </div>
-      <div class="eligibility-block">
-        <div class="eligibility-label">Eligibility Requirements</div>
-        <div class="eligibility-text" contenteditable="true">NGOs and SHG federations working in rural areas. Must have 3+ years in agriculture, watershed, or livelihood creation. Registered under Societies Act / Trust Act. Preference for organisations working in aspirational districts or tribal belts. Requires project proposal with measurable outcomes.</div>
-      </div>
-      <div class="causes-row">
-        <span class="cause-tag" contenteditable="true">Rural Livelihoods</span>
-        <span class="cause-tag" contenteditable="true">Agriculture</span>
-        <span class="cause-tag" contenteditable="true">Water Conservation</span>
-        <span class="cause-tag" contenteditable="true">SHG Federations</span>
-      </div>
-      <button class="guidance-toggle" onclick="toggleGuidance(this)">🎯 Show Guidance, Links &amp; Benchmarks ▼</button>
-      <div class="guidance-panel">
-        <div class="guidance-section">
-          <div class="guidance-heading">✅ Recommended Next Steps</div>
-          <ul class="guidance-steps">
-            <li>Identify and contact your <strong>NABARD Regional Office</strong> (nabard.org/regional-offices) — WDF grants are processed regionally, not centrally</li>
-            <li>Prepare a Detailed Project Report (DPR) showing watershed area, community participation plan, and expected ecological + livelihood outcomes</li>
-            <li>Demonstrate prior work in the target geography — NABARD strongly prefers organisations with local presence and community trust</li>
-            <li>Explore the <strong>NABARD Farm Sector Development Fund</strong> and <strong>Tribal Development Fund</strong> as parallel channels if your geography qualifies</li>
-          </ul>
-        </div>
-        <div class="guidance-section">
-          <div class="guidance-heading">🔗 Learn More</div>
-          <div class="learn-links">
-            <a class="learn-link" href="https://www.nabard.org/content.aspx?id=649&catid=633&mid=288" target="_blank">→ NABARD Farm Sector Promotion Fund — NGO support page</a>
-            <a class="learn-link" href="https://csrbox.org/Impact/description/India_CSR_news_WABAG,-NABARD-&-NGOS-ink-MoUs-for-Watershed-Programs--Making-communities-climate-resilient_248" target="_blank">→ WABAG + NABARD + NGO Watershed MoU model (CSRBox case study)</a>
-            <a class="learn-link" href="https://ngosindia.com/national-bank-for-agriculture-rural-development-nabard/" target="_blank">→ NABARD-NGO Partnership overview (NGOs India)</a>
-          </div>
-        </div>
-        <div class="guidance-section">
-          <div class="guidance-heading">🏆 Benchmark NGOs to Study</div>
-          <div class="benchmark-list">
-            <div class="benchmark-item">
-              <div class="benchmark-name">PRADAN (Professional Assistance for Development Action) — Pan-India</div>
-              <div class="benchmark-desc">One of India's most respected rural livelihood and watershed NGOs with deep NABARD partnerships. Study their SHG-federation approach and community natural resource management models.</div>
+    <!-- Controls Bar -->
+    <div class="controls-bar">
+        <div class="controls-container">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Search by keyword, NGO sector, deadline..." onkeyup="filterAndSearch()">
             </div>
-            <div class="benchmark-item">
-              <div class="benchmark-name">SEEDS (Social Education Economic Development Society) — Tamil Nadu</div>
-              <div class="benchmark-desc">Received ₹2.25Cr NABARD WDF grant for watershed projects in Virudhunagar &amp; Dindigul. Directly benchmarkable for watershed DPR structure and NABARD reporting.</div>
+            <div class="filter-buttons">
+                <button class="filter-btn active" onclick="filterByCategory('all')">All</button>
+                <button class="filter-btn" onclick="filterByCategory('gov')">Government</button>
+                <button class="filter-btn" onclick="filterByCategory('found')">Foundation</button>
+                <button class="filter-btn" onclick="filterByCategory('un')">UN & Multilateral</button>
+                <button class="filter-btn" onclick="filterByCategory('impact')">Impact Investing</button>
             </div>
-            <div class="benchmark-item">
-              <div class="benchmark-name">Action For Rural Development Society (ARDS) — Telangana</div>
-              <div class="benchmark-desc">Implements NABARD WDF Natural Resource Management programme in Nalgonda district. Visit ards.1ngo.in for their programme model and geographic scope.</div>
-            </div>
-          </div>
         </div>
-      </div>
-      <div class="card-footer">
-        <a class="source-link" href="https://www.nabard.org" target="_blank">🔗 nabard.org</a>
-        <span class="edit-icon">✏️ All fields editable</span>
-      </div>
     </div>
 
-    <!-- CARD 4 -->
-    <div class="card" data-tags="health maternal child disease">
-      <div class="card-top">
-        <div class="card-title" contenteditable="true">MoHFW — NGO Financial Assistance for Healthcare Delivery</div>
-        <span class="status-badge status-open">✅ Open</span>
-      </div>
-      <div class="card-meta">
-        <div class="meta-item"><div class="meta-label">Funding Amount</div><div class="meta-value amount" contenteditable="true">₹2L – ₹25L per annum</div></div>
-        <div class="meta-item"><div class="meta-label">Deadline</div><div class="meta-value" contenteditable="true">Annual, Q1 cycle open</div></div>
-        <div class="meta-item"><div class="meta-label">Funding Type</div><div class="meta-value" contenteditable="true">Grant-in-Aid</div></div>
-        <div class="meta-item"><div class="meta-label">Application Via</div><div class="meta-value" contenteditable="true">mohfw.gov.in / State Health Dept</div></div>
-      </div>
-      <div class="eligibility-block">
-        <div class="eligibility-label">Eligibility Requirements</div>
-        <div class="eligibility-text" contenteditable="true">NGOs involved in maternal health, child nutrition, disease control (TB, leprosy, malaria) or last-mile healthcare access. Minimum 2 years of healthcare programming. 12A, 80G, DARPAN registration required. MOU with State Health Department preferred.</div>
-      </div>
-      <div class="causes-row">
-        <span class="cause-tag" contenteditable="true">Maternal Health</span>
-        <span class="cause-tag" contenteditable="true">Child Nutrition</span>
-        <span class="cause-tag" contenteditable="true">Disease Control</span>
-        <span class="cause-tag" contenteditable="true">Last-Mile Health</span>
-      </div>
-      <button class="guidance-toggle" onclick="toggleGuidance(this)">🎯 Show Guidance, Links &amp; Benchmarks ▼</button>
-      <div class="guidance-panel">
-        <div class="guidance-section">
-          <div class="guidance-heading">✅ Recommended Next Steps</div>
-          <ul class="guidance-steps">
-            <li>Contact the <strong>State Health Department's NGO Cell</strong> — most MoHFW funding is routed via State NHM (National Health Mission) to implementing NGOs</li>
-            <li>Apply for empanelment with <strong>NHM in your state</strong> before approaching central MoHFW — state-level MoU is often a prerequisite</li>
-            <li>Align your programme to the National Health Policy 2017 priorities: maternal health, RMNCH+A, TB elimination, or non-communicable diseases</li>
-            <li>Document community health worker (ASHA/ANM) partnerships — MoHFW favours NGOs that complement, not duplicate, the government system</li>
-          </ul>
-        </div>
-        <div class="guidance-section">
-          <div class="guidance-heading">🔗 Learn More</div>
-          <div class="learn-links">
-            <a class="learn-link" href="https://nhm.gov.in/index1.php?lang=1&level=1&sublinkid=971&lid=210" target="_blank">→ NHM NGO Partnership Framework (nhm.gov.in)</a>
-            <a class="learn-link" href="https://mohfw.gov.in" target="_blank">→ Ministry of Health &amp; Family Welfare — main portal</a>
-            <a class="learn-link" href="https://www2.fundsforngos.org/tag/india/" target="_blank">→ FundsforNGOs — latest India health grant listings</a>
-          </div>
-        </div>
-        <div class="guidance-section">
-          <div class="guidance-heading">🏆 Benchmark NGOs to Study</div>
-          <div class="benchmark-list">
-            <div class="benchmark-item">
-              <div class="benchmark-name">SEWA Rural — Gujarat</div>
-              <div class="benchmark-desc">Pioneer in rural maternal and child health in tribal South Gujarat. MoHFW-partnered for decades. Study their integrated nutrition+health model and government co-delivery structure.</div>
+    <!-- Main Content -->
+    <div class="main-container">
+
+        <!-- SECTION 1: Government Grants -->
+        <section class="section" data-section="gov">
+            <div class="section-header" onclick="toggleSection(this)">
+                <span class="section-toggle">▼</span>
+                <h2>Government Grants & Schemes</h2>
+                <div class="section-count">7</div>
             </div>
-            <div class="benchmark-item">
-              <div class="benchmark-name">Antara Foundation — Rajasthan &amp; MP</div>
-              <div class="benchmark-desc">Focuses on last-mile maternal health and RMNCH. Known for the Akshada programme with Tata Trusts + Rajasthan govt. Strong M&amp;E and data systems — benchmark for health proposal writing.</div>
+            <div class="cards-grid">
+
+                <!-- Card 1: Ministry of Tribal Affairs -->
+                <div class="grant-card" data-status="closing" data-category="gov">
+                    <div class="card-header">
+                        <h3 class="card-title" contenteditable="true">Ministry of Tribal Affairs — NGO Proposals FY 2026-27</h3>
+                        <span class="status-badge status-closing">⏰ Closing Soon</span>
+                    </div>
+                    <div class="card-meta">
+                        <div class="meta-item">
+                            <span class="meta-label">Amount</span>
+                            <span class="meta-value amount">₹10L – ₹2Cr per project</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Deadline</span>
+                            <span class="meta-value deadline">April 30, 2026</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Type</span>
+                            <span class="meta-value">Grant-in-Aid</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Portal</span>
+                            <span class="meta-value">ngo.tribal.gov.in</span>
+                        </div>
+                    </div>
+                    <div class="card-description" contenteditable="true">Registered NGOs/Trusts/Societies working with tribal communities. Must have FCRA or Darpan registration. Projects for tribal welfare, education, vocational training, or PVTGs. 3-year track record preferred.</div>
+                    <div class="tags">
+                        <span class="tag">Tribal Welfare</span>
+                        <span class="tag">Education</span>
+                        <span class="tag">Vocational Training</span>
+                        <span class="tag">PVTGs</span>
+                    </div>
+                    <button class="guidance-toggle" onclick="toggleGuidance(this)">🎯 Show Guidance, Links & Benchmarks ▼</button>
+                    <div class="guidance-panel">
+                        <div class="guidance-section">
+                            <div class="guidance-section-title">✅ Recommended Next Steps</div>
+                            <ul class="guidance-steps">
+                                <li>Register on NGO-DARPAN first</li>
+                                <li>Log in to ngo.tribal.gov.in — April 1-30 only window</li>
+                                <li>Download scheme guidelines PDF from tribal.nic.in</li>
+                                <li>Prepare 3 years audited accounts and project proposal</li>
+                            </ul>
+                        </div>
+                        <div class="guidance-section">
+                            <div class="guidance-section-title">🔗 Learn More</div>
+                            <div class="learn-links">
+                                <a href="https://ngo.tribal.gov.in" target="_blank">ngo.tribal.gov.in (apply)</a>
+                                <a href="https://tribal.nic.in/downloads/NGO/NGO-GIAtoVOsGuidelines.pdf" target="_blank">Guidelines PDF</a>
+                                <a href="https://www.pib.gov.in/Pressreleaseshare.aspx?PRID=1697139" target="_blank">PIB funds context</a>
+                            </div>
+                        </div>
+                        <div class="guidance-section">
+                            <div class="guidance-section-title">🏆 Benchmark NGOs to Study</div>
+                            <div class="benchmark-list">
+                                <div class="benchmark-item">
+                                    <div class="benchmark-name">NEEDS (Jharkhand)</div>
+                                    <div class="benchmark-desc">Long-standing tribal welfare org funded by MoTA</div>
+                                </div>
+                                <div class="benchmark-item">
+                                    <div class="benchmark-name">Agragamee (Odisha)</div>
+                                    <div class="benchmark-desc">Tribal livelihoods and natural resource management</div>
+                                </div>
+                                <div class="benchmark-item">
+                                    <div class="benchmark-name">Lok Biradari Prakalp (Maharashtra)</div>
+                                    <div class="benchmark-desc">Integrated tribal welfare in remote Hemalkasa</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 2: SBI Foundation — CONSERW Jaldhara *** URGENT *** -->
+                <div class="grant-card" data-status="closing" data-category="gov">
+                    <div class="card-header">
+                        <h3 class="card-title" contenteditable="true">SBI Foundation — CONSERW Jaldhara (Aquatic Ecosystem Conservation) ⚠️ URGENT</h3>
+                        <span class="status-badge status-closing">⏰ Closing Soon</span>
+                    </div>
+                    <div class="card-meta">
+                        <div class="meta-item">
+                            <span class="meta-label">Amount</span>
+                            <span class="meta-value amount">₹50L – ₹4.5Cr (2–3 yr projects)</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Deadline</span>
+                            <span class="meta-value deadline urgent">April 15, 2026 ← 2 DAYS LEFT</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Type</span>
+                            <span class="meta-value">CSR Grant</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Portal</span>
+                            <span class="meta-value">sbifoundation.in</span>
+                        </div>
+                    </div>
+                    <div class="card-description" contenteditable="true">Indian non-profits with 3+ years experience in water/environment. Projects on waterbody rejuvenation, spring shed management, riverbank protection, rainwater harvesting. 12A, 80G, CSR-1 required.</div>
+                    <div class="tags">
+                        <span class="tag">Water Conservation</span>
+                        <span class="tag">Aquatic Ecosystems</span>
+                        <span class="tag">Riverbank Restoration</span>
+                        <span class="tag">Rainwater Harvesting</span>
+                    </div>
+                    <button class="guidance-toggle" onclick="toggleGuidance(this)">🎯 Show Guidance, Links & Benchmarks ▼</button>
+                    <div class="guidance-panel">
+                        <div class="guidance-section">
+                            <div class="guidance-section-title">✅ Recommended Next Steps</div>
+                            <ul class="guidance-steps">
+                                <li>URGENT — deadline April 15 is in 2 days</li>
+                                <li>Visit sbifoundation.in immediately</li>
+                                <li>Prepare RFP response showing 3+ years water/environment experience</li>
+                                <li>Gather 12A, 80G, CSR-1 registration documents</li>
+                                <li>Submit via sbifoundation.in RFP portal before April 15 EOD</li>
+                            </ul>
+                        </div>
+                        <div class="guidance-section">
+                            <div class="guidance-section-title">🔗 Learn More</div>
+                            <div class="learn-links">
+                                <a href="https://sbifoundation.in" target="_blank">sbifoundation.in (main portal)</a>
+                                <a href="https://www2.fundsforngos.org/environment/call-for-proposals-aquatic-ecosystem-conservation-by-sbi-foundation-india/amp/" target="_blank">Full details on fundsforngos.org</a>
+                            </div>
+                        </div>
+                        <div class="guidance-section">
+                            <div class="guidance-section-title">🏆 Benchmark NGOs to Study</div>
+                            <div class="benchmark-list">
+                                <div class="benchmark-item">
+                                    <div class="benchmark-name">Sadguru Water and Development Foundation</div>
+                                    <div class="benchmark-desc">Gujarat/Rajasthan/MP — water access pioneer, Tata Trusts partner</div>
+                                </div>
+                                <div class="benchmark-item">
+                                    <div class="benchmark-name">Arghyam Foundation</div>
+                                    <div class="benchmark-desc">Bangalore — water grant-making org, good model for proposal framing</div>
+                                </div>
+                                <div class="benchmark-item">
+                                    <div class="benchmark-name">PRADAN</div>
+                                    <div class="benchmark-desc">Strong watershed programme in tribal belts</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 3: SBI Foundation — CONSERW Urban Plantation -->
+                <div class="grant-card" data-status="closing" data-category="gov">
+                    <div class="card-header">
+                        <h3 class="card-title" contenteditable="true">SBI Foundation — CONSERW Urban Plantation Grant</h3>
+                        <span class="status-badge status-closing">⏰ Closing Soon</span>
+                    </div>
+                    <div class="card-meta">
+                        <div class="meta-item">
+                            <span class="meta-label">Amount</span>
+                            <span class="meta-value amount">Up to ₹4Cr (1–3 yr projects)</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Deadline</span>
+                            <span class="meta-value deadline">April 22, 2026</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Type</span>
+                            <span class="meta-value">CSR Grant</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Portal</span>
+                            <span class="meta-value">sbifoundation.in</span>
+                        </div>
+                    </div>
+                    <div class="card-description" contenteditable="true">NGOs registered in India with 3+ years in ecosystem restoration, urban plantation, or community environmental programs. 12A, 80G, CSR-1 required. Projects: Miyawaki forests, community plantations, institutional green campuses, sustainable waste management.</div>
+                    <div class="tags">
+                        <span class="tag">Urban Plantation</span>
+                        <span class="tag">Miyawaki Forests</span>
+                        <span class="tag">Ecosystem Restoration</span>
+                        <span class="tag">Green Campuses</span>
+                    </div>
+                    <button class="guidance-toggle" onclick="toggleGuidance(this)">🎯 Show Guidance, Links & Benchmarks ▼</button>
+                    <div class="guidance-panel">
+                        <div class="guidance-section">
+                            <div class="guidance-section-title">✅ Recommended Next Steps</div>
+                            <ul class="guidance-steps">
+                                <li>Visit sbifoundation.in and download RFP document</li>
+                                <li>Map your project to one of the 6 supported interventions</li>
+                                <li>Prepare a site map and community participation plan</li>
+                                <li>Submit before April 22 deadline</li>
+                            </ul>
+                        </div>
+                        <div class="guidance-section">
+                            <div class="guidance-section-title">🔗 Learn More</div>
+                            <div class="learn-links">
+                                <a href="https://www2.fundsforngos.org/environment/sbi-foundation-sbif-conserw-urban-plantation-grant-india/" target="_blank">Full details on fundsforngos.org</a>
+                                <a href="https://sbifoundation.in" target="_blank">sbifoundation.in (apply)</a>
+                            </div>
+                        </div>
+                        <div class="guidance-section">
+                            <div class="guidance-section-title">🏆 Benchmark NGOs to Study</div>
+                            <div class="benchmark-list">
+                                <div class="benchmark-item">
+                                    <div class="benchmark-name">GRAVIS (Gramin Vikas Vigyan Samiti)</div>
+                                    <div class="benchmark-desc">Rajasthan — HCL Grant winner for water harvesting in Thar desert</div>
+                                </div>
+                                <div class="benchmark-item">
+                                    <div class="benchmark-name">Planatearth</div>
+                                    <div class="benchmark-desc">Water body conservation from plastics</div>
+                                </div>
+                                <div class="benchmark-item">
+                                    <div class="benchmark-name">SayTrees</div>
+                                    <div class="benchmark-desc">Bangalore-based urban plantation NGO</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 4: eAnudaan — Ministry of Social Justice -->
+                <div class="grant-card" data-status="open" data-category="gov">
+                    <div class="card-header">
+                        <h3 class="card-title" contenteditable="true">eAnudaan — Ministry of Social Justice & Empowerment</h3>
+                        <span class="status-badge status-open">✅ Open</span>
+                    </div>
+                    <div class="card-meta">
+                        <div class="meta-item">
+                            <span class="meta-label">Amount</span>
+                            <span class="meta-value amount">Variable (scheme-based)</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Deadline</span>
+                            <span class="meta-value">Rolling / Scheme-specific</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Type</span>
+                            <span class="meta-value">Central Sector Grant</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Portal</span>
+                            <span class="meta-value">grants-msje.gov.in</span>
+                        </div>
+                    </div>
+                    <div class="card-description" contenteditable="true">NGOs as Trust, Society, or Section 8 Company. 12A & 80G required. Work on SC/OBC/disabled/senior citizens/transgender welfare. DARPAN mandatory. Min 3 years with audited accounts.</div>
+                    <div class="tags">
+                        <span class="tag">Disability Rights</span>
+                        <span class="tag">Gender Justice</span>
+                        <span class="tag">SC/OBC Welfare</span>
+                        <span class="tag">Senior Citizens</span>
+                    </div>
+                    <button class="guidance-toggle" onclick="toggleGuidance(this)">🎯 Show Guidance, Links & Benchmarks ▼</button>
+                    <div class="guidance-panel">
+                        <div class="guidance-section">
+                            <div class="guidance-section-title">✅ Recommended Next Steps</div>
+                            <ul class="guidance-steps">
+                                <li>Register on NGO-DARPAN</li>
+                                <li>Access grants-msje.gov.in and select relevant scheme</li>
+                                <li>Prepare Utilization Certificates from prior grants</li>
+                                <li>Download scheme-wise eligibility from socialjustice.gov.in</li>
+                            </ul>
+                        </div>
+                        <div class="guidance-section">
+                            <div class="guidance-section-title">🔗 Learn More</div>
+                            <div class="learn-links">
+                                <a href="https://grants-msje.gov.in" target="_blank">grants-msje.gov.in (portal)</a>
+                                <a href="https://socialjustice.gov.in/common/68585" target="_blank">Guidelines</a>
+                                <a href="https://ngodarpan.gov.in" target="_blank">NGO-DARPAN</a>
+                            </div>
+                        </div>
+                        <div class="guidance-section">
+                            <div class="guidance-section-title">🏆 Benchmark NGOs to Study</div>
+                            <div class="benchmark-list">
+                                <div class="benchmark-item">
+                                    <div class="benchmark-name">National Association for the Blind India</div>
+                                    <div class="benchmark-desc">Veteran MSJE grantee</div>
+                                </div>
+                                <div class="benchmark-item">
+                                    <div class="benchmark-name">Samarthan (MP)</div>
+                                    <div class="benchmark-desc">Rigorous M&E and government interface model</div>
+                                </div>
+                                <div class="benchmark-item">
+                                    <div class="benchmark-name">HelpAge India</div>
+                                    <div class="benchmark-desc">Major senior citizen welfare grant recipient</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 5: NABARD — Rural Development -->
+                <div class="grant-card" data-status="open" data-category="gov">
+                    <div class="card-header">
+                        <h3 class="card-title" contenteditable="true">NABARD — Rural Development & Watershed Management</h3>
+                        <span class="status-badge status-open">✅ Open</span>
+                    </div>
+                    <div class="card-meta">
+                        <div class="meta-item">
+                            <span class="meta-label">Amount</span>
+                            <span class="meta-value amount">₹5L – ₹50L per project</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Deadline</span>
+                            <span class="meta-value">Quarterly rolling cycles</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Type</span>
+                            <span class="meta-value">Grant + Soft Loan</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Portal</span>
+                            <span class="meta-value">nabard.org / Regional offices</span>
+                        </div>
+                    </div>
+                    <div class="card-description" contenteditable="true">NGOs and SHG federations in rural areas. 3+ years in agriculture, watershed, or livelihoods. Registered under Societies/Trust Act. Preference for aspirational districts or tribal belts.</div>
+                    <div class="tags">
+                        <span class="tag">Rural Livelihoods</span>
+                        <span class="tag">Agriculture</span>
+                        <span class="tag">Water Conservation</span>
+                        <span class="tag">SHG Federations</span>
+                    </div>
+                    <button class="guidance-toggle" onclick="toggleGuidance(this)">🎯 Show Guidance, Links & Benchmarks ▼</button>
+                    <div class="guidance-panel">
+                        <div class="guidance-section">
+                            <div class="guidance-section-title">✅ Recommended Next Steps</div>
+                            <ul class="guidance-steps">
+                                <li>Contact regional NABARD office</li>
+                                <li>Prepare Detailed Project Report showing watershed area and community participation</li>
+                                <li>Demonstrate local presence</li>
+                                <li>Explore Farm Sector Development Fund and Tribal Development Fund in parallel</li>
+                            </ul>
+                        </div>
+                        <div class="guidance-section">
+                            <div class="guidance-section-title">🔗 Learn More</div>
+                            <div class="learn-links">
+                                <a href="https://www.nabard.org/content.aspx?id=649&catid=633&mid=288" target="_blank">Farm Sector on nabard.org</a>
+                                <a href="https://csrbox.org/Impact/description/India_CSR_news_WABAG,-NABARD-&-NGOS-ink-MoUs-for-Watershed-Programs--Making-communities-climate-resilient_248" target="_blank">WABAG MoU case study</a>
+                            </div>
+                        </div>
+                        <div class="guidance-section">
+                            <div class="guidance-section-title">🏆 Benchmark NGOs to Study</div>
+                            <div class="benchmark-list">
+                                <div class="benchmark-item">
+                                    <div class="benchmark-name">PRADAN</div>
+                                    <div class="benchmark-desc">Most respected rural livelihood NGO with deep NABARD ties</div>
+                                </div>
+                                <div class="benchmark-item">
+                                    <div class="benchmark-name">SEEDS Tamil Nadu</div>
+                                    <div class="benchmark-desc">₹2.25Cr WDF grantee</div>
+                                </div>
+                                <div class="benchmark-item">
+                                    <div class="benchmark-name">ARDS Telangana</div>
+                                    <div class="benchmark-desc">NABARD WDF Natural Resource Management implementer</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 6: MoHFW — Healthcare -->
+                <div class="grant-card" data-status="open" data-category="gov">
+                    <div class="card-header">
+                        <h3 class="card-title" contenteditable="true">MoHFW — NGO Financial Assistance for Healthcare</h3>
+                        <span class="status-badge status-open">✅ Open</span>
+                    </div>
+                    <div class="card-meta">
+                        <div class="meta-item">
+                            <span class="meta-label">Amount</span>
+                            <span class="meta-value amount">₹2L – ₹25L per annum</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Deadline</span>
+                            <span class="meta-value">Annual, Q1 cycle open</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Type</span>
+                            <span class="meta-value">Grant-in-Aid</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Portal</span>
+                            <span class="meta-value">mohfw.gov.in / State Health Dept</span>
+                        </div>
+                    </div>
+                    <div class="card-description" contenteditable="true">NGOs in maternal health, child nutrition, disease control (TB, leprosy, malaria) or last-mile healthcare. 2+ years health programming. 12A, 80G, DARPAN. MOU with State Health Dept preferred.</div>
+                    <div class="tags">
+                        <span class="tag">Maternal Health</span>
+                        <span class="tag">Child Nutrition</span>
+                        <span class="tag">Disease Control</span>
+                        <span class="tag">Last-Mile Health</span>
+                    </div>
+                    <button class="guidance-toggle" onclick="toggleGuidance(this)">🎯 Show Guidance, Links & Benchmarks ▼</button>
+                    <div class="guidance-panel">
+                        <div class="guidance-section">
+                            <div class="guidance-section-title">✅ Recommended Next Steps</div>
+                            <ul class="guidance-steps">
+                                <li>Contact State Health Department's NGO Cell</li>
+                                <li>Apply for NHM state empanelment first</li>
+                                <li>Align programme to National Health Policy 2017 priorities</li>
+                                <li>Document ASHA/ANM partnerships</li>
+                            </ul>
+                        </div>
+                        <div class="guidance-section">
+                            <div class="guidance-section-title">🔗 Learn More</div>
+                            <div class="learn-links">
+                                <a href="https://nhm.gov.in" target="_blank">nhm.gov.in</a>
+                                <a href="https://mohfw.gov.in" target="_blank">mohfw.gov.in</a>
+                                <a href="https://www2.fundsforngos.org/tag/india/" target="_blank">Latest health grants on fundsforngos.org</a>
+                            </div>
+                        </div>
+                        <div class="guidance-section">
+                            <div class="guidance-section-title">🏆 Benchmark NGOs to Study</div>
+                            <div class="benchmark-list">
+                                <div class="benchmark-item">
+                                    <div class="benchmark-name">SEWA Rural (Gujarat)</div>
+                                    <div class="benchmark-desc">Pioneer rural maternal health in tribal South Gujarat</div>
+                                </div>
+                                <div class="benchmark-item">
+                                    <div class="benchmark-name">Antara Foundation</div>
+                                    <div class="benchmark-desc">RMNCH tech-augmented approach</div>
+                                </div>
+                                <div class="benchmark-item">
+                                    <div class="benchmark-name">Sangath (Goa)</div>
+                                    <div class="benchmark-desc">NHM partnerships, WHO recognition</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 7: SEBI Social Stock Exchange -->
+                <div class="grant-card" data-status="new" data-category="gov">
+                    <div class="card-header">
+                        <h3 class="card-title" contenteditable="true">SEBI Social Stock Exchange — ZCZP Listings</h3>
+                        <span class="status-badge status-new">🆕 New</span>
+                    </div>
+                    <div class="card-meta">
+                        <div class="meta-item">
+                            <span class="meta-label">Amount</span>
+                            <span class="meta-value amount">₹1,000 min. investment (retail)</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Effective</span>
+                            <span class="meta-value">March 23, 2026 (live)</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Type</span>
+                            <span class="meta-value">Capital Markets (SSE)</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Portal</span>
+                            <span class="meta-value">BSE/NSE SSE Segment</span>
+                        </div>
+                    </div>
+                    <div class="card-description" contenteditable="true">Non-profits and for-profit social enterprises. 80G + 12A. 3+ years operations. ₹50L annual expenditure + ₹10L raised. Annual Social Impact Scorecards required. CBF ₹100Cr via NABARD/SIDBI.</div>
+                    <div class="tags">
+                        <span class="tag">Social Enterprise</span>
+                        <span class="tag">Impact Investing</span>
+                        <span class="tag">Capital Markets</span>
+                        <span class="tag">All Sectors</span>
+                    </div>
+                    <button class="guidance-toggle" onclick="toggleGuidance(this)">🎯 Show Guidance, Links & Benchmarks ▼</button>
+                    <div class="guidance-panel">
+                        <div class="guidance-section">
+                            <div class="guidance-section-title">✅ Recommended Next Steps</div>
+                            <ul class="guidance-steps">
+                                <li>Confirm SSE eligibility thresholds</li>
+                                <li>Apply to NABARD/SIDBI Capacity Building Fund</li>
+                                <li>Engage SEBI-registered social auditor for Impact Scorecard</li>
+                                <li>Contact BSE SSE desk</li>
+                            </ul>
+                        </div>
+                        <div class="guidance-section">
+                            <div class="guidance-section-title">🔗 Learn More</div>
+                            <div class="learn-links">
+                                <a href="https://www.ipoplatform.com/social-stock-exchange/listed-npos-and-registered-npos-on-bse-sse-and-nse-sse" target="_blank">IPO Platform SSE resource</a>
+                                <a href="https://zerodha.com/varsity/chapter/social-stock-exchanges-an-introduction/" target="_blank">Zerodha SSE intro</a>
+                                <a href="https://news.fundsforngos.org/2026/03/26/4-key-lessons-from-indias-social-stock-exchange-for-impact-investing/" target="_blank">Key lessons article</a>
+                            </div>
+                        </div>
+                        <div class="guidance-section">
+                            <div class="guidance-section-title">🏆 Benchmark NGOs to Study</div>
+                            <div class="benchmark-list">
+                                <div class="benchmark-item">
+                                    <div class="benchmark-name">Swades Foundation</div>
+                                    <div class="benchmark-desc">First ZCZP issuer, raised ₹10Cr, public documents on BSE SSE</div>
+                                </div>
+                                <div class="benchmark-item">
+                                    <div class="benchmark-name">SGBS Microfinance</div>
+                                    <div class="benchmark-desc">First-ever SSE listed NGO 2023</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
-            <div class="benchmark-item">
-              <div class="benchmark-name">Sangath — Goa &amp; Pan-India</div>
-              <div class="benchmark-desc">Mental health and community health NGO with NHM state partnerships and WHO recognition. Benchmark for innovative, low-cost health delivery models that attract both government and international grants.</div>
+        </section>
+
+        <!-- SECTION 2: Foundations & Philanthropy -->
+        <section class="section" data-section="found">
+            <div class="section-header" onclick="toggleSection(this)">
+                <span class="section-toggle">▼</span>
+                <h2>Foundations & Philanthropy</h2>
+                <div class="section-count">5</div>
             </div>
-          </div>
-        </div>
-      </div>
-      <div class="card-footer">
-        <a class="source-link" href="https://mohfw.gov.in" target="_blank">🔗 mohfw.gov.in</a>
-        <span class="edit-icon">✏️ All fields editable</span>
-      </div>
+            <div class="cards-grid">
+
+                <!-- Card 8: Azim Premji Foundation -->
+                <div class="grant-card" data-status="open" data-category="found">
+                    <div class="card-header">
+                        <h3 class="card-title" contenteditable="true">Azim Premji Foundation — Early-Stage CSO Grants</h3>
+                        <span class="status-badge status-open">✅ Open</span>
+                    </div>
+                    <div class="card-meta">
+                        <div class="meta-item">
+                            <span class="meta-label">Amount</span>
+                            <span class="meta-value amount">Up to ₹25L/year (multi-year)</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Deadline</span>
+                            <span class="meta-value">Rolling — apply anytime</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Type</span>
+                            <span class="meta-value">Institutional Grant</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Geography</span>
+                            <span class="meta-value">Northeast, Jharkhand, Odisha, etc.</span>
+                        </div>
+                    </div>
+                    <div class="card-description" contenteditable="true">Registered on or after March 1, 2019. Annual expenditure ≤ ₹25L. Valid 12A. Direct work with vulnerable/marginalised communities. Sectors: education, healthcare, livelihoods, disability, governance, gender justice.</div>
+                    <div class="tags">
+                        <span class="tag">Early-stage NGOs</span>
+                        <span class="tag">Education</span>
+                        <span class="tag">Healthcare</span>
+                        <span class="tag">Gender Justice</span>
+                    </div>
+                    <button class="guidance-toggle" onclick="toggleGuidance(this)">🎯 Show Guidance, Links & Benchmarks ▼</button>
+                    <div class="guidance-panel">
+                        <div class="guidance-section">
+                            <div class="guidance-section-title">✅ Recommended Next Steps</div>
+                            <ul class="guidance-steps">
+                                <li>Fill NGO Registration Form at azimpremjifoundation.org</li>
+                                <li>Confirm registration date after March 1 2019 and expenditure ≤₹25L</li>
+                                <li>Prepare narrative of direct community work in target geography</li>
+                                <li>Frame as 3–5 year vision not a one-off project</li>
+                            </ul>
+                        </div>
+                        <div class="guidance-section">
+                            <div class="guidance-section-title">🔗 Learn More</div>
+                            <div class="learn-links">
+                                <a href="https://azimpremjifoundation.org/apply-for-a-grant/" target="_blank">azimpremjifoundation.org</a>
+                                <a href="https://www2.fundsforngos.org/latest-funds-for-ngos/azim-premji-foundation-grant-program-for-early-stage-csos-in-india/" target="_blank">fundsforngos.org article</a>
+                                <a href="https://ngobox.org/full_grant_announcement_Applications-Invited-for-Azim-Premji-Foundation-Grants-for-Early-stage-CSOs-_12203" target="_blank">ngobox.org announcement</a>
+                            </div>
+                        </div>
+                        <div class="guidance-section">
+                            <div class="guidance-section-title">🏆 Benchmark NGOs to Study</div>
+                            <div class="benchmark-list">
+                                <div class="benchmark-item">
+                                    <div class="benchmark-name">Ektara (Bhopal)</div>
+                                    <div class="benchmark-desc">APF-supported illustrators academy for children's books</div>
+                                </div>
+                                <div class="benchmark-item">
+                                    <div class="benchmark-name">Eklavya (MP)</div>
+                                    <div class="benchmark-desc">Alternative curriculum for marginalised children</div>
+                                </div>
+                                <div class="benchmark-item">
+                                    <div class="benchmark-name">Search "APF grantee Jharkhand" on LinkedIn</div>
+                                    <div class="benchmark-desc">Find recently funded orgs in target states</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 9: HCLTech Grant -->
+                <div class="grant-card" data-status="new" data-category="found">
+                    <div class="card-header">
+                        <h3 class="card-title" contenteditable="true">HCLTech Grant — 12th Edition Watch (11th Winners Just Announced)</h3>
+                        <span class="status-badge status-new">🆕 New</span>
+                    </div>
+                    <div class="card-meta">
+                        <div class="meta-item">
+                            <span class="meta-label">Amount</span>
+                            <span class="meta-value amount">₹5Cr each (3 winners) + ₹50L runners-up</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Deadline</span>
+                            <span class="meta-value">12th edition call expected late 2026</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Type</span>
+                            <span class="meta-value">CSR Grant</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Geography</span>
+                            <span class="meta-value">Pan-India (HCL districts preferred)</span>
+                        </div>
+                    </div>
+                    <div class="card-description" contenteditable="true">Registered NGOs with 3+ years. 12A, 80G, CSR-1. New category in 2026: WATER added alongside biodiversity, health, education. 7,274 registrations received for 11th edition. Top winners get ₹5Cr over 4 years.</div>
+                    <div class="tags">
+                        <span class="tag">Water</span>
+                        <span class="tag">Biodiversity</span>
+                        <span class="tag">Rural Education</span>
+                        <span class="tag">Community Health</span>
+                    </div>
+                    <button class="guidance-toggle" onclick="toggleGuidance(this)">🎯 Show Guidance, Links & Benchmarks ▼</button>
+                    <div class="guidance-panel">
+                        <div class="guidance-section">
+                            <div class="guidance-section-title">✅ Recommended Next Steps</div>
+                            <ul class="guidance-steps">
+                                <li>Study the 11th edition winners announced March 20 2026</li>
+                                <li>Register early on hclfoundation.org portal for 12th edition alert</li>
+                                <li>Build strong tech integration angle and impact data</li>
+                                <li>Ensure CSR-1 registration on MCA portal</li>
+                            </ul>
+                        </div>
+                        <div class="guidance-section">
+                            <div class="guidance-section-title">🔗 Learn More</div>
+                            <div class="learn-links">
+                                <a href="https://www.hcltech.com/press-releases/hclfoundation-announces-winners-11th-edition-hcltech-grant" target="_blank">11th winners announcement</a>
+                                <a href="https://thecsruniverse.com/articles/hclfoundation-announces-winners-of-11th-hcltech-grant-awards-24-crore-to-ngos" target="_blank">thecsruniverse breakdown</a>
+                                <a href="https://www.hclfoundation.org/hcltech-grant" target="_blank">Official hclfoundation.org</a>
+                            </div>
+                        </div>
+                        <div class="guidance-section">
+                            <div class="guidance-section-title">🏆 Benchmark NGOs to Study</div>
+                            <div class="benchmark-list">
+                                <div class="benchmark-item">
+                                    <div class="benchmark-name">GRAVIS Rajasthan</div>
+                                    <div class="benchmark-desc">11th edition Water winner ₹5Cr, water harvesting in Barmer/Thar</div>
+                                </div>
+                                <div class="benchmark-item">
+                                    <div class="benchmark-name">Live Foundation Jharkhand</div>
+                                    <div class="benchmark-desc">11th edition Biodiversity winner, community forest conservation 50 villages</div>
+                                </div>
+                                <div class="benchmark-item">
+                                    <div class="benchmark-name">Goodwill Foundation Mizoram</div>
+                                    <div class="benchmark-desc">Healthcare winner, 40 villages in Mamit district</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 10: Tata Trusts -->
+                <div class="grant-card" data-status="open" data-category="found">
+                    <div class="card-header">
+                        <h3 class="card-title" contenteditable="true">Tata Trusts — Programmatic & Institutional Grants</h3>
+                        <span class="status-badge status-open">✅ Open</span>
+                    </div>
+                    <div class="card-meta">
+                        <div class="meta-item">
+                            <span class="meta-label">Amount</span>
+                            <span class="meta-value amount">₹25L – ₹5Cr (multi-year)</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Deadline</span>
+                            <span class="meta-value">LOI: Quarterly (next: June 2026)</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Type</span>
+                            <span class="meta-value">Programme / Institutional Grant</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Geography</span>
+                            <span class="meta-value">Pan-India (tribal prioritised)</span>
+                        </div>
+                    </div>
+                    <div class="card-description" contenteditable="true">Established NGOs with 5+ years. WASH, nutrition, healthcare, education, rural livelihoods, digital inclusion, tribal development. LOI first. 12A, 80G, FCRA. Strong M&E required.</div>
+                    <div class="tags">
+                        <span class="tag">WASH</span>
+                        <span class="tag">Nutrition</span>
+                        <span class="tag">Digital Inclusion</span>
+                        <span class="tag">Tribal Development</span>
+                    </div>
+                    <button class="guidance-toggle" onclick="toggleGuidance(this)">🎯 Show Guidance, Links & Benchmarks ▼</button>
+                    <div class="guidance-panel">
+                        <div class="guidance-section">
+                            <div class="guidance-section-title">✅ Recommended Next Steps</div>
+                            <ul class="guidance-steps">
+                                <li>Submit LOI for June 2026 quarterly cycle</li>
+                                <li>Demonstrate 5+ years programmatic work and strong M&E</li>
+                                <li>Review tatatrusts.org/list-of-partners for overlap</li>
+                                <li>Frame LOI as 3–5 year transformation vision</li>
+                            </ul>
+                        </div>
+                        <div class="guidance-section">
+                            <div class="guidance-section-title">🔗 Learn More</div>
+                            <div class="learn-links">
+                                <a href="https://www.tatatrusts.org/list-of-partners" target="_blank">Tata Trusts partners list</a>
+                                <a href="https://horizons.tatatrusts.org/2021/december/tata-trusts-horizons-partnerships-ngos-nonprofits.html" target="_blank">Partnerships article</a>
+                                <a href="https://ngosindia.com/sir-ratan-tata-trust/" target="_blank">ngosindia.com article</a>
+                            </div>
+                        </div>
+                        <div class="guidance-section">
+                            <div class="guidance-section-title">🏆 Benchmark NGOs to Study</div>
+                            <div class="benchmark-list">
+                                <div class="benchmark-item">
+                                    <div class="benchmark-name">PRADAN</div>
+                                    <div class="benchmark-desc">Long-term Tata partner for livelihoods/watershed</div>
+                                </div>
+                                <div class="benchmark-item">
+                                    <div class="benchmark-name">Sadguru Water Development Foundation</div>
+                                    <div class="benchmark-desc">WASH pioneer in tribal areas since 1976</div>
+                                </div>
+                                <div class="benchmark-item">
+                                    <div class="benchmark-name">Jaldhaara Foundation</div>
+                                    <div class="benchmark-desc">Co-implements Tata Water Mission</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 11: Bill & Melinda Gates Foundation -->
+                <div class="grant-card" data-status="upcoming" data-category="found">
+                    <div class="card-header">
+                        <h3 class="card-title" contenteditable="true">Bill & Melinda Gates Foundation — Grand Challenges India</h3>
+                        <span class="status-badge status-upcoming">🔜 Upcoming</span>
+                    </div>
+                    <div class="card-meta">
+                        <div class="meta-item">
+                            <span class="meta-label">Amount</span>
+                            <span class="meta-value amount">USD 100K – USD 1M (Phase I/II)</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Deadline</span>
+                            <span class="meta-value">Q3 2026 (expected announcement)</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Type</span>
+                            <span class="meta-value">Innovation Grant (FCRA required)</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Geography</span>
+                            <span class="meta-value">India (all states)</span>
+                        </div>
+                    </div>
+                    <div class="card-description" contenteditable="true">Research institutions, social enterprises, NGOs with FCRA. Health, nutrition, agriculture, gender equity, financial inclusion innovation. Phase I ~USD 100K, Phase II up to USD 1M. Govt collaboration preferred.</div>
+                    <div class="tags">
+                        <span class="tag">Global Health</span>
+                        <span class="tag">Nutrition Innovation</span>
+                        <span class="tag">AgriTech</span>
+                        <span class="tag">Financial Inclusion</span>
+                    </div>
+                    <button class="guidance-toggle" onclick="toggleGuidance(this)">🎯 Show Guidance, Links & Benchmarks ▼</button>
+                    <div class="guidance-panel">
+                        <div class="guidance-section">
+                            <div class="guidance-section-title">✅ Recommended Next Steps</div>
+                            <ul class="guidance-steps">
+                                <li>Register on BIRAC portal (birac.nic.in) and watch for Q3 call</li>
+                                <li>Ensure FCRA registration is current</li>
+                                <li>Prepare 2-page innovation concept note for Phase I</li>
+                                <li>Align to Gates India priorities: primary health, sanitation, agriculture-nutrition linkage</li>
+                            </ul>
+                        </div>
+                        <div class="guidance-section">
+                            <div class="guidance-section-title">🔗 Learn More</div>
+                            <div class="learn-links">
+                                <a href="https://www.birac.nic.in/desc_new.php?id=103" target="_blank">BIRAC portal</a>
+                                <a href="https://www.gatesfoundation.org/our-work/places/india" target="_blank">Gates Foundation India work</a>
+                                <a href="https://www.fundsforngos.org/gates-foundation/gates-foundation-grand-challenges-global-health-explorations/" target="_blank">Grand Challenges details</a>
+                            </div>
+                        </div>
+                        <div class="guidance-section">
+                            <div class="guidance-section-title">🏆 Benchmark NGOs to Study</div>
+                            <div class="benchmark-list">
+                                <div class="benchmark-item">
+                                    <div class="benchmark-name">Antara Foundation</div>
+                                    <div class="benchmark-desc">Gates-aligned maternal health RMNCH approach</div>
+                                </div>
+                                <div class="benchmark-item">
+                                    <div class="benchmark-name">Khushi Baby</div>
+                                    <div class="benchmark-desc">NFC wristbands for immunisation tracking, classic Gates innovation model</div>
+                                </div>
+                                <div class="benchmark-item">
+                                    <div class="benchmark-name">Consider IIT Bombay co-application</div>
+                                    <div class="benchmark-desc">Gates strongly values academic partnerships</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 12: RUTF Severe Acute Malnutrition Challenge -->
+                <div class="grant-card" data-status="new" data-category="found">
+                    <div class="card-header">
+                        <h3 class="card-title" contenteditable="true">Cost-Disrupting Innovations — RUTF Severe Acute Malnutrition Challenge</h3>
+                        <span class="status-badge status-new">🆕 New</span>
+                    </div>
+                    <div class="card-meta">
+                        <div class="meta-item">
+                            <span class="meta-label">Amount</span>
+                            <span class="meta-value amount">Up to USD 1.5M</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Deadline</span>
+                            <span class="meta-value deadline">April 28, 2026 ← 15 DAYS</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Type</span>
+                            <span class="meta-value">Innovation Challenge Grant</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">FCRA</span>
+                            <span class="meta-value">Required for Indian recipients</span>
+                        </div>
+                    </div>
+                    <div class="card-description" contenteditable="true">Research institutions, NGOs, social enterprises with innovative approaches to lowering cost of Ready-to-Use Therapeutic Food (RUTF) for treating Severe Acute Malnutrition. Global call relevant to India. FCRA required for Indian recipients.</div>
+                    <div class="tags">
+                        <span class="tag">Child Nutrition</span>
+                        <span class="tag">Malnutrition</span>
+                        <span class="tag">RUTF Innovation</span>
+                        <span class="tag">Food Security</span>
+                    </div>
+                    <button class="guidance-toggle" onclick="toggleGuidance(this)">🎯 Show Guidance, Links & Benchmarks ▼</button>
+                    <div class="guidance-panel">
+                        <div class="guidance-section">
+                            <div class="guidance-section-title">✅ Recommended Next Steps</div>
+                            <ul class="guidance-steps">
+                                <li>Act fast — deadline April 28 is 15 days away</li>
+                                <li>Prepare a concept note on cost-reduction innovation for RUTF</li>
+                                <li>Ensure FCRA is active</li>
+                                <li>Target organisations in high-burden states (UP, Bihar, MP, Rajasthan, Jharkhand)</li>
+                            </ul>
+                        </div>
+                        <div class="guidance-section">
+                            <div class="guidance-section-title">🔗 Learn More</div>
+                            <div class="learn-links">
+                                <a href="https://www2.fundsforngos.org/listing/latest-grant-opportunities-for-india-in-2026/" target="_blank">fundsforngos.org full listing</a>
+                                <a href="https://gcgh.grandchallenges.org/challenges" target="_blank">Grand Challenges platform</a>
+                            </div>
+                        </div>
+                        <div class="guidance-section">
+                            <div class="guidance-section-title">🏆 Benchmark NGOs to Study</div>
+                            <div class="benchmark-list">
+                                <div class="benchmark-item">
+                                    <div class="benchmark-name">Action Against Hunger India</div>
+                                    <div class="benchmark-desc">RUTF and SAM treatment pioneer</div>
+                                </div>
+                                <div class="benchmark-item">
+                                    <div class="benchmark-name">NIN (National Institute of Nutrition Hyderabad)</div>
+                                    <div class="benchmark-desc">Government research body for nutrition solutions</div>
+                                </div>
+                                <div class="benchmark-item">
+                                    <div class="benchmark-name">UNICEF India nutrition programme</div>
+                                    <div class="benchmark-desc">Benchmark for SAM protocol design</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- SECTION 3: UN & Multilateral -->
+        <section class="section" data-section="un">
+            <div class="section-header" onclick="toggleSection(this)">
+                <span class="section-toggle">▼</span>
+                <h2>UN & Multilateral</h2>
+                <div class="section-count">4</div>
+            </div>
+            <div class="cards-grid">
+
+                <!-- Card 13: Urban Childcare Innovation Challenge -->
+                <div class="grant-card" data-status="new" data-category="un">
+                    <div class="card-header">
+                        <h3 class="card-title" contenteditable="true">Urban Childcare Innovation Challenge — India</h3>
+                        <span class="status-badge status-new">🆕 New</span>
+                    </div>
+                    <div class="card-meta">
+                        <div class="meta-item">
+                            <span class="meta-label">Amount</span>
+                            <span class="meta-value amount">Not specified (innovation challenge)</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Deadline</span>
+                            <span class="meta-value deadline urgent">April 16, 2026 ← 3 DAYS</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Type</span>
+                            <span class="meta-value">Innovation Grant</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Geography</span>
+                            <span class="meta-value">Urban India</span>
+                        </div>
+                    </div>
+                    <div class="card-description" contenteditable="true">Organisations with innovative childcare enterprise solutions led by or benefiting women in urban India. National initiative supporting scaling of childcare enterprises.</div>
+                    <div class="tags">
+                        <span class="tag">Childcare</span>
+                        <span class="tag">Women Empowerment</span>
+                        <span class="tag">Urban India</span>
+                        <span class="tag">Social Enterprise</span>
+                    </div>
+                    <button class="guidance-toggle" onclick="toggleGuidance(this)">🎯 Show Guidance, Links & Benchmarks ▼</button>
+                    <div class="guidance-panel">
+                        <div class="guidance-section">
+                            <div class="guidance-section-title">✅ Recommended Next Steps</div>
+                            <ul class="guidance-steps">
+                                <li>URGENT — deadline April 16 is in 3 days</li>
+                                <li>Apply immediately</li>
+                                <li>Prepare brief on your childcare innovation model</li>
+                                <li>Document scale potential and current reach</li>
+                            </ul>
+                        </div>
+                        <div class="guidance-section">
+                            <div class="guidance-section-title">🔗 Learn More</div>
+                            <div class="learn-links">
+                                <a href="https://www2.fundsforngos.org/listing/latest-grant-opportunities-for-india-in-2026/" target="_blank">fundsforngos.org full listing</a>
+                                <a href="https://india.un.org/en" target="_blank">UN India office</a>
+                            </div>
+                        </div>
+                        <div class="guidance-section">
+                            <div class="guidance-section-title">🏆 Benchmark NGOs to Study</div>
+                            <div class="benchmark-list">
+                                <div class="benchmark-item">
+                                    <div class="benchmark-name">Mobile Creches</div>
+                                    <div class="benchmark-desc">Urban childcare pioneer for construction site workers</div>
+                                </div>
+                                <div class="benchmark-item">
+                                    <div class="benchmark-name">Nanhi Kali (Mahindra Foundation)</div>
+                                    <div class="benchmark-desc">Girl child education model with urban reach</div>
+                                </div>
+                                <div class="benchmark-item">
+                                    <div class="benchmark-name">Childline India Foundation</div>
+                                    <div class="benchmark-desc">Child welfare infrastructure benchmark</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 14: UNDP/GEF Small Grants Programme -->
+                <div class="grant-card" data-status="open" data-category="un">
+                    <div class="card-header">
+                        <h3 class="card-title" contenteditable="true">UNDP/GEF Small Grants Programme — Community Environmental Projects</h3>
+                        <span class="status-badge status-open">✅ Open</span>
+                    </div>
+                    <div class="card-meta">
+                        <div class="meta-item">
+                            <span class="meta-label">Amount</span>
+                            <span class="meta-value amount">Up to USD 50,000</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Deadline</span>
+                            <span class="meta-value">Rolling (OP8 cycle, 2026)</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Type</span>
+                            <span class="meta-value">Multilateral Grant (FCRA required)</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Portal</span>
+                            <span class="meta-value">sgp-india.org</span>
+                        </div>
+                    </div>
+                    <div class="card-description" contenteditable="true">NGOs, CBOs, cooperatives on climate change, biodiversity, land degradation. Community participation required. FCRA required. Max USD 50K. Co-funding encouraged.</div>
+                    <div class="tags">
+                        <span class="tag">Climate Action</span>
+                        <span class="tag">Biodiversity</span>
+                        <span class="tag">Land Restoration</span>
+                        <span class="tag">Community Resilience</span>
+                    </div>
+                    <button class="guidance-toggle" onclick="toggleGuidance(this)">🎯 Show Guidance, Links & Benchmarks ▼</button>
+                    <div class="guidance-panel">
+                        <div class="guidance-section">
+                            <div class="guidance-section-title">✅ Recommended Next Steps</div>
+                            <ul class="guidance-steps">
+                                <li>Visit sgp-india.org and contact CEE India (National Host Institution)</li>
+                                <li>Ensure FCRA is active</li>
+                                <li>Frame project in GEF focal area language</li>
+                                <li>Document community co-contribution in budget</li>
+                            </ul>
+                        </div>
+                        <div class="guidance-section">
+                            <div class="guidance-section-title">🔗 Learn More</div>
+                            <div class="learn-links">
+                                <a href="https://sgp-india.org/" target="_blank">sgp-india.org</a>
+                                <a href="https://www.ceeindia.org/gef-undp-small-grants-programme-india-facilitating-ngo-and-community-initiatives" target="_blank">CEE India GEF info</a>
+                                <a href="https://sgp.undp.org/about-us-157/how-to-apply.html" target="_blank">How to apply guide</a>
+                            </div>
+                        </div>
+                        <div class="guidance-section">
+                            <div class="guidance-section-title">🏆 Benchmark NGOs to Study</div>
+                            <div class="benchmark-list">
+                                <div class="benchmark-item">
+                                    <div class="benchmark-name">CEE India</div>
+                                    <div class="benchmark-desc">National Host Institution, 443 projects over 5 phases, best proposal benchmarks</div>
+                                </div>
+                                <div class="benchmark-item">
+                                    <div class="benchmark-name">Search "GEF SGP India project + [your state]"</div>
+                                    <div class="benchmark-desc">On sgp.undp.org database</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 15: UN Women — Trust Fund -->
+                <div class="grant-card" data-status="upcoming" data-category="un">
+                    <div class="card-header">
+                        <h3 class="card-title" contenteditable="true">UN Women — Trust Fund to End Violence Against Women & Girls</h3>
+                        <span class="status-badge status-upcoming">🔜 Upcoming</span>
+                    </div>
+                    <div class="card-meta">
+                        <div class="meta-item">
+                            <span class="meta-label">Amount</span>
+                            <span class="meta-value amount">USD 20M pool across 2 cohorts</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Period</span>
+                            <span class="meta-value">2026–27</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Type</span>
+                            <span class="meta-value">Thematic Grant (FCRA required)</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Portal</span>
+                            <span class="meta-value">untf.unwomen.org</span>
+                        </div>
+                    </div>
+                    <div class="card-description" contenteditable="true">Civil society orgs and women's rights groups. 3+ years GBV work. FCRA required. Focus on prevention, survivor services, institutional reform, social norms change. Women-led orgs and first-time UNTF grantees prioritised.</div>
+                    <div class="tags">
+                        <span class="tag">Gender-Based Violence</span>
+                        <span class="tag">Women's Rights</span>
+                        <span class="tag">Survivor Support</span>
+                        <span class="tag">Social Norms Change</span>
+                    </div>
+                    <button class="guidance-toggle" onclick="toggleGuidance(this)">🎯 Show Guidance, Links & Benchmarks ▼</button>
+                    <div class="guidance-panel">
+                        <div class="guidance-section">
+                            <div class="guidance-section-title">✅ Recommended Next Steps</div>
+                            <ul class="guidance-steps">
+                                <li>Sign up for alerts at untf.unwomen.org</li>
+                                <li>Ensure FCRA is active and renewal not due within grant period</li>
+                                <li>Document 3+ years GBV work with data</li>
+                                <li>Highlight if org is women-led and has not received UNTF funding before</li>
+                            </ul>
+                        </div>
+                        <div class="guidance-section">
+                            <div class="guidance-section-title">🔗 Learn More</div>
+                            <div class="learn-links">
+                                <a href="https://untf.unwomen.org/en/grant-giving/call-for-proposals" target="_blank">UNTF call for proposals</a>
+                                <a href="https://www.unwomen.org/en/trust-funds/un-trust-fund-to-end-violence-against-women" target="_blank">UN Women trust funds</a>
+                                <a href="https://untf.unwomen.org/sites/default/files/2025-09/untfevawg_2025_call_for_proposals_eng_compressed-2.pdf" target="_blank">Full call PDF</a>
+                            </div>
+                        </div>
+                        <div class="guidance-section">
+                            <div class="guidance-section-title">🏆 Benchmark NGOs to Study</div>
+                            <div class="benchmark-list">
+                                <div class="benchmark-item">
+                                    <div class="benchmark-name">Breakthrough India</div>
+                                    <div class="benchmark-desc">Ring the Bell campaign reached 130M people</div>
+                                </div>
+                                <div class="benchmark-item">
+                                    <div class="benchmark-name">CREA Delhi</div>
+                                    <div class="benchmark-desc">UN Women-aligned grants, legal rights + sexual health model</div>
+                                </div>
+                                <div class="benchmark-item">
+                                    <div class="benchmark-name">Jagori Delhi</div>
+                                    <div class="benchmark-desc">35+ years GBV documentation and survivor support</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 16: CIVICUS Digital Action Lab -->
+                <div class="grant-card" data-status="open" data-category="un">
+                    <div class="card-header">
+                        <h3 class="card-title" contenteditable="true">CIVICUS Digital Action Lab — Cohort 3 (2026)</h3>
+                        <span class="status-badge status-open">✅ Open</span>
+                    </div>
+                    <div class="card-meta">
+                        <div class="meta-item">
+                            <span class="meta-label">Amount</span>
+                            <span class="meta-value amount">Up to USD 20,000</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Deadline</span>
+                            <span class="meta-value">Check civicus.org — April/May 2026</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Type</span>
+                            <span class="meta-value">Capacity + Grant (FCRA required)</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Portal</span>
+                            <span class="meta-value">civicus.org</span>
+                        </div>
+                    </div>
+                    <div class="card-description" contenteditable="true">Civil society orgs with digital advocacy or tech-for-good programme. FCRA required. Clear theory of change for digital activism or civic tech.</div>
+                    <div class="tags">
+                        <span class="tag">Civic Tech</span>
+                        <span class="tag">Digital Advocacy</span>
+                        <span class="tag">Civil Society</span>
+                        <span class="tag">Technology Access</span>
+                    </div>
+                    <button class="guidance-toggle" onclick="toggleGuidance(this)">🎯 Show Guidance, Links & Benchmarks ▼</button>
+                    <div class="guidance-panel">
+                        <div class="guidance-section">
+                            <div class="guidance-section-title">✅ Recommended Next Steps</div>
+                            <ul class="guidance-steps">
+                                <li>Check civicus.org/digital-action-lab for exact deadline</li>
+                                <li>Prepare digital theory of change</li>
+                                <li>Ensure FCRA is in order</li>
+                            </ul>
+                        </div>
+                        <div class="guidance-section">
+                            <div class="guidance-section-title">🔗 Learn More</div>
+                            <div class="learn-links">
+                                <a href="https://opportunitiesforyouth.org/2026/04/03/civicus-digital-action-lab-cohort-3-2026-grants-of-up-to-20000-for-civil-society-organisations/" target="_blank">opportunitiesforyouth.org announcement</a>
+                                <a href="https://www.civicus.org" target="_blank">civicus.org</a>
+                            </div>
+                        </div>
+                        <div class="guidance-section">
+                            <div class="guidance-section-title">🏆 Benchmark NGOs to Study</div>
+                            <div class="benchmark-list">
+                                <div class="benchmark-item">
+                                    <div class="benchmark-name">iSPIRT Foundation</div>
+                                    <div class="benchmark-desc">India's digital public goods gold standard</div>
+                                </div>
+                                <div class="benchmark-item">
+                                    <div class="benchmark-name">DataKind Bangalore</div>
+                                    <div class="benchmark-desc">Data-for-good organisations model</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- SECTION 4: Impact Investing -->
+        <section class="section" data-section="impact">
+            <div class="section-header" onclick="toggleSection(this)">
+                <span class="section-toggle">▼</span>
+                <h2>Impact Investing</h2>
+                <div class="section-count">1</div>
+            </div>
+            <div class="cards-grid">
+
+                <!-- Card 17: SIDBI — Capacity Building Fund -->
+                <div class="grant-card" data-status="open" data-category="impact">
+                    <div class="card-header">
+                        <h3 class="card-title" contenteditable="true">SIDBI — Capacity Building Fund for SSE-Listed Social Enterprises</h3>
+                        <span class="status-badge status-open">✅ Open</span>
+                    </div>
+                    <div class="card-meta">
+                        <div class="meta-item">
+                            <span class="meta-label">Amount</span>
+                            <span class="meta-value amount">₹100Cr total pool (draw-down grants)</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Deadline</span>
+                            <span class="meta-value">Ongoing</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Type</span>
+                            <span class="meta-value">Capacity Building Grant + Blended Finance</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Portal</span>
+                            <span class="meta-value">sidbi.in / BSE-NSE SSE</span>
+                        </div>
+                    </div>
+                    <div class="card-description" contenteditable="true">Non-profits and for-profit social enterprises eligible to list on SSE. Grants support SSE registration, SEBI compliance, impact measurement, investor readiness.</div>
+                    <div class="tags">
+                        <span class="tag">Social Enterprise</span>
+                        <span class="tag">Investor Readiness</span>
+                        <span class="tag">Impact Measurement</span>
+                        <span class="tag">All Causes</span>
+                    </div>
+                    <button class="guidance-toggle" onclick="toggleGuidance(this)">🎯 Show Guidance, Links & Benchmarks ▼</button>
+                    <div class="guidance-panel">
+                        <div class="guidance-section">
+                            <div class="guidance-section-title">✅ Recommended Next Steps</div>
+                            <ul class="guidance-steps">
+                                <li>Confirm SSE eligibility (80G + 12A + ≥3 years + ≥₹50L expenditure + ≥₹10L raised)</li>
+                                <li>Contact BSE SSE desk</li>
+                                <li>Apply to CBF before attempting SSE listing</li>
+                                <li>Engage SEBI-registered social auditor for Impact Scorecard</li>
+                            </ul>
+                        </div>
+                        <div class="guidance-section">
+                            <div class="guidance-section-title">🔗 Learn More</div>
+                            <div class="learn-links">
+                                <a href="https://www.ipoplatform.com/social-stock-exchange/listed-npos-and-registered-npos-on-bse-sse-and-nse-sse" target="_blank">IPO Platform SSE resource</a>
+                                <a href="https://www.ipoplatform.com/social-stock-exchange/registration-of-npo-on-sse" target="_blank">NPO registration guide</a>
+                                <a href="https://news.fundsforngos.org/2026/03/26/4-key-lessons-from-indias-social-stock-exchange-for-impact-investing/" target="_blank">Key lessons article</a>
+                            </div>
+                        </div>
+                        <div class="guidance-section">
+                            <div class="guidance-section-title">🏆 Benchmark NGOs to Study</div>
+                            <div class="benchmark-list">
+                                <div class="benchmark-item">
+                                    <div class="benchmark-name">Swades Foundation</div>
+                                    <div class="benchmark-desc">First ZCZP issuer, ₹10Cr raised, all public documents on BSE SSE</div>
+                                </div>
+                                <div class="benchmark-item">
+                                    <div class="benchmark-name">SGBS Microfinance</div>
+                                    <div class="benchmark-desc">First-ever SSE listed NGO 2023, registration roadmap publicly available</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
     </div>
 
-    <!-- CARD 5: SEBI SSE -->
-    <div class="card" data-tags="social enterprise stock exchange sebi impact">
-      <div class="card-top">
-        <div class="card-title" contenteditable="true">SEBI Social Stock Exchange — Zero Coupon Zero Principal (ZCZP) Listings</div>
-        <span class="status-badge status-new">🆕 New Dev.</span>
-      </div>
-      <div class="card-meta">
-        <div class="meta-item"><div class="meta-label">Funding Amount</div><div class="meta-value amount" contenteditable="true">₹1,000 min. investment (retail)</div></div>
-        <div class="meta-item"><div class="meta-label">Effective Date</div><div class="meta-value" contenteditable="true">March 23, 2026 (live)</div></div>
-        <div class="meta-item"><div class="meta-label">Funding Type</div><div class="meta-value" contenteditable="true">Capital Markets (SSE)</div></div>
-        <div class="meta-item"><div class="meta-label">Application Via</div><div class="meta-value" contenteditable="true">BSE/NSE SSE Segment</div></div>
-      </div>
-      <div class="eligibility-block">
-        <div class="eligibility-label">Eligibility Requirements</div>
-        <div class="eligibility-text" contenteditable="true">Non-profits and for-profit social enterprises. NPOs must be registered on the SSE via BSE or NSE. Must publish annual Social Impact Scorecards. ZCZP instruments require SEBI-compliant disclosures and audited financials. Capacity Building Fund of ₹100Cr available via NABARD/SIDBI for listing support.</div>
-      </div>
-      <div class="causes-row">
-        <span class="cause-tag" contenteditable="true">Social Enterprise</span>
-        <span class="cause-tag" contenteditable="true">Impact Investing</span>
-        <span class="cause-tag" contenteditable="true">Capital Markets</span>
-        <span class="cause-tag" contenteditable="true">All Sectors</span>
-      </div>
-      <button class="guidance-toggle" onclick="toggleGuidance(this)">🎯 Show Guidance, Links &amp; Benchmarks ▼</button>
-      <div class="guidance-panel">
-        <div class="guidance-section">
-          <div class="guidance-heading">✅ Recommended Next Steps</div>
-          <ul class="guidance-steps">
-            <li>Ensure you have valid <strong>80G + 12A + audited financials</strong> (min ₹50L expenditure + ₹10L raised in past FY) — mandatory SSE eligibility</li>
-            <li>Apply for the <strong>NABARD/SIDBI Capacity Building Fund</strong> (₹100Cr corpus) to get support navigating SSE registration without bearing the cost yourself</li>
-            <li>Engage a SEBI-registered social auditor to begin your <strong>Social Impact Scorecard</strong> — required annually post-listing</li>
-            <li>Contact the BSE SSE desk (bsesocialstockexchange@bseindia.com) for the NPO listing information pack</li>
-          </ul>
-        </div>
-        <div class="guidance-section">
-          <div class="guidance-heading">🔗 Learn More</div>
-          <div class="learn-links">
-            <a class="learn-link" href="https://www.ipoplatform.com/social-stock-exchange/listed-npos-and-registered-npos-on-bse-sse-and-nse-sse" target="_blank">→ Full list of currently listed NPOs on BSE &amp; NSE SSE</a>
-            <a class="learn-link" href="https://zerodha.com/varsity/chapter/social-stock-exchanges-an-introduction/" target="_blank">→ Zerodha Varsity: Plain-English SSE explainer (excellent primer)</a>
-            <a class="learn-link" href="https://news.fundsforngos.org/2026/03/26/4-key-lessons-from-indias-social-stock-exchange-for-impact-investing/" target="_blank">→ 4 Key Lessons from India's SSE — March 2026 (fundsforNGOs)</a>
-          </div>
-        </div>
-        <div class="guidance-section">
-          <div class="guidance-heading">🏆 Benchmark NGOs to Study</div>
-          <div class="benchmark-list">
-            <div class="benchmark-item">
-              <div class="benchmark-name">Swades Foundation — Maharashtra</div>
-              <div class="benchmark-desc">First NPO to raise ₹10Cr via ZCZP on the SSE (2024). Programmes in sustainable livelihoods (goat rearing), health, and education in rural Maharashtra. The definitive SSE pioneer to study end-to-end.</div>
+    <!-- Footer -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-section">
+                <div class="footer-title">Key Compliance Reminders</div>
+                <div class="footer-content">
+                    <ul>
+                        <li><strong>Government grants:</strong> DARPAN registration mandatory. eAnudaan portal for MSJE grants.</li>
+                        <li><strong>Foreign grants:</strong> FCRA registration required under FCRA 2010. Renewed every 5 years.</li>
+                        <li><strong>CSR funding:</strong> CSR-1 + 12A + 80G mandatory from July 2025.</li>
+                        <li><strong>Social Stock Exchange (SSE):</strong> Via BSE/NSE is a new regulated channel for Indian NPOs.</li>
+                    </ul>
+                </div>
             </div>
-            <div class="benchmark-item">
-              <div class="benchmark-name">SGBS Microfinance — First SSE-Listed NGO (2023)</div>
-              <div class="benchmark-desc">First NGO to list on SSE in 2023. Study their registration process, disclosure documents, and impact scorecard format — publicly available on BSE SSE segment.</div>
+            <div class="footer-section">
+                <div class="footer-title">Key Portals</div>
+                <div class="footer-content">
+                    <ul>
+                        <li><strong>ngodarpan.gov.in</strong> · <strong>grants-msje.gov.in</strong> · <strong>ngo.tribal.gov.in</strong></li>
+                        <li><strong>sbifoundation.in</strong> · <strong>fundsforngos.org/tag/india/</strong> · <strong>ngobox.org</strong></li>
+                        <li><strong>andpurpose.world/grants/</strong> · <strong>csrbox.org</strong> · <strong>indiainvestmentgrid.gov.in/csr</strong></li>
+                    </ul>
+                </div>
             </div>
-          </div>
-        </div>
-      </div>
-      <div class="card-footer">
-        <a class="source-link" href="https://www.sebi.gov.in" target="_blank">🔗 sebi.gov.in</a>
-        <span class="edit-icon">✏️ All fields editable</span>
-      </div>
-    </div>
-
-  </div><!-- /cards-grid -->
-</div><!-- /section gov -->
-
-
-<!-- ══════════════════════════════════════════
-     SECTION 2: FOUNDATIONS & PHILANTHROPY
-═══════════════════════════════════════════ -->
-<div class="section" data-section="found">
-  <div class="section-header">
-    <div class="section-icon" style="background:#dcfce7">🤝</div>
-    <span class="section-title">Foundations &amp; Philanthropy</span>
-    <span class="section-count">4 opportunities</span>
-    <span class="section-toggle" onclick="toggleSection(this)">▲ Collapse</span>
-  </div>
-  <div class="cards-grid section-body">
-
-    <!-- CARD: Azim Premji -->
-    <div class="card" data-tags="education health livelihoods disability northeast jharkhand">
-      <div class="card-top">
-        <div class="card-title" contenteditable="true">Azim Premji Foundation — Early-Stage CSO Grant Programme</div>
-        <span class="status-badge status-new">🆕 Active</span>
-      </div>
-      <div class="card-meta">
-        <div class="meta-item"><div class="meta-label">Funding Amount</div><div class="meta-value amount" contenteditable="true">Up to ₹25L/year (multi-year)</div></div>
-        <div class="meta-item"><div class="meta-label">Deadline</div><div class="meta-value" contenteditable="true">Rolling — apply anytime</div></div>
-        <div class="meta-item"><div class="meta-label">Funding Type</div><div class="meta-value" contenteditable="true">Institutional Grant</div></div>
-        <div class="meta-item"><div class="meta-label">Geography</div><div class="meta-value" contenteditable="true">Northeast India, Jharkhand, Odisha, Uttarakhand, N. Karnataka</div></div>
-      </div>
-      <div class="eligibility-block">
-        <div class="eligibility-label">Eligibility Requirements</div>
-        <div class="eligibility-text" contenteditable="true">Organisations registered on or after March 1, 2019 (0–5 years since registration). Average annual expenditure ≤ ₹25L. Must have valid 12A registration. Working directly with vulnerable or marginalised communities. Sectors: education, healthcare, livelihoods, disability, governance, gender justice. Apply via NGO Registration Form → Grant Management Portal (7-working-day login process).</div>
-      </div>
-      <div class="causes-row">
-        <span class="cause-tag" contenteditable="true">Early-stage NGOs</span>
-        <span class="cause-tag" contenteditable="true">Education</span>
-        <span class="cause-tag" contenteditable="true">Healthcare</span>
-        <span class="cause-tag" contenteditable="true">Gender Justice</span>
-        <span class="cause-tag" contenteditable="true">Governance</span>
-      </div>
-      <button class="guidance-toggle" onclick="toggleGuidance(this)">🎯 Show Guidance, Links &amp; Benchmarks ▼</button>
-      <div class="guidance-panel">
-        <div class="guidance-section">
-          <div class="guidance-heading">✅ Recommended Next Steps</div>
-          <ul class="guidance-steps">
-            <li>Fill the <strong>NGO Registration Form</strong> at azimpremjifoundation.org — you'll receive Grant Management Portal credentials within 7 working days</li>
-            <li>Confirm your org was registered <strong>on or after March 1, 2019</strong> and that annual expenditure is ≤ ₹25L — if you exceed this, you are ineligible for this specific programme</li>
-            <li>Prepare a clear narrative of direct community work in <strong>one of the 9 target geographies</strong> (Jharkhand, Odisha, Uttarakhand, NE states, or N. Karnataka districts)</li>
-            <li>This grant is multi-year — show your 3–5 year vision, not just a single project. APF invests in organisations, not one-off programmes</li>
-          </ul>
-        </div>
-        <div class="guidance-section">
-          <div class="guidance-heading">🔗 Learn More</div>
-          <div class="learn-links">
-            <a class="learn-link" href="https://azimpremjifoundation.org/apply-for-a-grant/" target="_blank">→ Apply for a Grant — Azim Premji Foundation (official)</a>
-            <a class="learn-link" href="https://www2.fundsforngos.org/latest-funds-for-ngos/azim-premji-foundation-grant-program-for-early-stage-csos-in-india/" target="_blank">→ Full programme summary (fundsforNGOs)</a>
-            <a class="learn-link" href="https://ngobox.org/full_grant_announcement_Applications-Invited-for-Azim-Premji-Foundation-Grants-for-Early-stage-CSOs-_12203" target="_blank">→ Grant announcement with eligibility details (NGOBox)</a>
-          </div>
-        </div>
-        <div class="guidance-section">
-          <div class="guidance-heading">🏆 Benchmark NGOs to Study</div>
-          <div class="benchmark-list">
-            <div class="benchmark-item">
-              <div class="benchmark-name">Ektara — Bhopal, Madhya Pradesh</div>
-              <div class="benchmark-desc">APF-supported org building an illustrators' academy for children's books in regional languages. Great example of a small, early-stage org with a sharp, singular focus that APF funds.</div>
+            <div class="footer-section">
+                <div class="disclaimer">
+                    <strong>⚠️ Disclaimer:</strong> This report is auto-generated daily using AI-powered web intelligence. Always verify deadlines and eligibility directly with the funding body before applying.
+                </div>
             </div>
-            <div class="benchmark-item">
-              <div class="benchmark-name">Eklavya — Madhya Pradesh</div>
-              <div class="benchmark-desc">Education NGO with APF knowledge partnership. Known for alternative curriculum and teaching tools for marginalised children. Benchmarkable for education proposal framing.</div>
-            </div>
-            <div class="benchmark-item">
-              <div class="benchmark-name">New organisations in Jharkhand / Odisha working on livelihoods</div>
-              <div class="benchmark-desc">APF actively looks for grassroots orgs in these states. Searching "APF grantee Jharkhand" or "APF grantee Odisha" on LinkedIn will surface funded orgs whose founders you can connect with for firsthand insights.</div>
-            </div>
-          </div>
         </div>
-      </div>
-      <div class="card-footer">
-        <a class="source-link" href="https://azimpremjifoundation.org/apply-for-a-grant/" target="_blank">🔗 azimpremjifoundation.org</a>
-        <span class="edit-icon">✏️ All fields editable</span>
-      </div>
-    </div>
+    </footer>
 
-    <!-- CARD: HCL Foundation -->
-    <div class="card" data-tags="education health environment community">
-      <div class="card-top">
-        <div class="card-title" contenteditable="true">HCL Foundation — My E-Haat &amp; Community Grants</div>
-        <span class="status-badge status-open">✅ Open</span>
-      </div>
-      <div class="card-meta">
-        <div class="meta-item"><div class="meta-label">Funding Amount</div><div class="meta-value amount" contenteditable="true">₹10L – ₹1Cr (project-based)</div></div>
-        <div class="meta-item"><div class="meta-label">Deadline</div><div class="meta-value" contenteditable="true">Check hclfoundation.org for cycle</div></div>
-        <div class="meta-item"><div class="meta-label">Funding Type</div><div class="meta-value" contenteditable="true">CSR + Philanthropic Grant</div></div>
-        <div class="meta-item"><div class="meta-label">Geography</div><div class="meta-value" contenteditable="true">Pan-India (HCL operating districts preferred)</div></div>
-      </div>
-      <div class="eligibility-block">
-        <div class="eligibility-label">Eligibility Requirements</div>
-        <div class="eligibility-text" contenteditable="true">Registered NGOs with 3+ years of experience. 12A, 80G, CSR-1 registration required. Projects in education, environment, health or community development. Preference for digital literacy and rural livelihood programmes. Demonstrated last-mile delivery capacity.</div>
-      </div>
-      <div class="causes-row">
-        <span class="cause-tag" contenteditable="true">Digital Literacy</span>
-        <span class="cause-tag" contenteditable="true">Rural Education</span>
-        <span class="cause-tag" contenteditable="true">Environment</span>
-        <span class="cause-tag" contenteditable="true">Community Health</span>
-      </div>
-      <button class="guidance-toggle" onclick="toggleGuidance(this)">🎯 Show Guidance, Links &amp; Benchmarks ▼</button>
-      <div class="guidance-panel">
-        <div class="guidance-section">
-          <div class="guidance-heading">✅ Recommended Next Steps</div>
-          <ul class="guidance-steps">
-            <li>Monitor <strong>hclfoundation.org/hcltech-grant</strong> — the HCLTech Grant runs an annual competition; the 2025 edition just concluded (3 winners get ₹5Cr each; 6 runners-up get ₹25L each)</li>
-            <li>Build a <strong>technology integration angle</strong> into your programme — HCL consistently funds orgs using tech for teacher training, digital literacy, or data-driven community work</li>
-            <li>Prepare a strong impact data story: HCL evaluates NGOs on lives impacted, cost-per-beneficiary, and replicability — document these metrics now</li>
-            <li>Ensure <strong>CSR-1 registration</strong> on MCA portal alongside 12A &amp; 80G before applying</li>
-          </ul>
-        </div>
-        <div class="guidance-section">
-          <div class="guidance-heading">🔗 Learn More</div>
-          <div class="learn-links">
-            <a class="learn-link" href="https://www.hclfoundation.org/hcltech-grant" target="_blank">→ HCLTech Grant — official page with past winners and cycle info</a>
-            <a class="learn-link" href="https://www.hcltech.com/press-releases/hclfoundation-announces-winners-2025-hcltech-grant" target="_blank">→ 2025 Grant Winners Announcement — study funded projects</a>
-            <a class="learn-link" href="https://thecsruniverse.com/articles/hclfoundation-announces-winners-of-2025-hcltech-grant-3-ngos-get-rs-5-cr-each-6-bag-25-lakh-each" target="_blank">→ 2025 Winners detailed breakdown — The CSR Universe</a>
-          </div>
-        </div>
-        <div class="guidance-section">
-          <div class="guidance-heading">🏆 Benchmark NGOs to Study</div>
-          <div class="benchmark-list">
-            <div class="benchmark-item">
-              <div class="benchmark-name">Meghshala — Sikkim / Pan-India</div>
-              <div class="benchmark-desc">2023 HCL Grant winner (Education). Tech-enabled teacher capacity building in local languages; directly benefited 63,000 students. Study their project proposal and tech-for-education framing.</div>
-            </div>
-            <div class="benchmark-item">
-              <div class="benchmark-name">Raised Lines Foundation — Pan-India</div>
-              <div class="benchmark-desc">HCL Grant winner for inclusive education using tactile resources across 38,400 villages. Benchmark for disability-inclusive education proposals with large geographic reach.</div>
-            </div>
-            <div class="benchmark-item">
-              <div class="benchmark-name">GRAVIS (Gramin Vikas Vigyan Samiti) — Rajasthan</div>
-              <div class="benchmark-desc">HCL Grant winner (Environment) for water harvesting in Barmer/Thar desert. Strong model for combining community resilience with environmental sustainability in grant proposals.</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="card-footer">
-        <a class="source-link" href="https://www.hclfoundation.org" target="_blank">🔗 hclfoundation.org</a>
-        <span class="edit-icon">✏️ All fields editable</span>
-      </div>
-    </div>
+    <!-- JavaScript -->
+    <script>
+        let editMode = true;
 
-    <!-- CARD: Tata Trusts -->
-    <div class="card" data-tags="water sanitation health nutrition education tribal">
-      <div class="card-top">
-        <div class="card-title" contenteditable="true">Tata Trusts — Programmatic &amp; Institutional Grants</div>
-        <span class="status-badge status-open">✅ Open</span>
-      </div>
-      <div class="card-meta">
-        <div class="meta-item"><div class="meta-label">Funding Amount</div><div class="meta-value amount" contenteditable="true">₹25L – ₹5Cr (multi-year)</div></div>
-        <div class="meta-item"><div class="meta-label">Deadline</div><div class="meta-value" contenteditable="true">LOI: Quarterly cycles (next: June 2026)</div></div>
-        <div class="meta-item"><div class="meta-label">Funding Type</div><div class="meta-value" contenteditable="true">Programme Grant / Institutional</div></div>
-        <div class="meta-item"><div class="meta-label">Geography</div><div class="meta-value" contenteditable="true">Pan-India (tribal regions prioritised)</div></div>
-      </div>
-      <div class="eligibility-block">
-        <div class="eligibility-label">Eligibility Requirements</div>
-        <div class="eligibility-text" contenteditable="true">Established NGOs with 5+ years of programmatic work. Thematic areas: water &amp; sanitation (WASH), nutrition, healthcare access, education, rural livelihoods, digital inclusion, and tribal development. Application via Letter of Intent (LOI) first. 12A, 80G, FCRA (if applicable). Strong M&amp;E framework required.</div>
-      </div>
-      <div class="causes-row">
-        <span class="cause-tag" contenteditable="true">WASH</span>
-        <span class="cause-tag" contenteditable="true">Nutrition</span>
-        <span class="cause-tag" contenteditable="true">Digital Inclusion</span>
-        <span class="cause-tag" contenteditable="true">Tribal Development</span>
-      </div>
-      <button class="guidance-toggle" onclick="toggleGuidance(this)">🎯 Show Guidance, Links &amp; Benchmarks ▼</button>
-      <div class="guidance-panel">
-        <div class="guidance-section">
-          <div class="guidance-heading">✅ Recommended Next Steps</div>
-          <ul class="guidance-steps">
-            <li>Submit a concise <strong>Letter of Intent (LOI)</strong> — Tata Trusts does not accept unsolicited full proposals; LOI is the mandatory first step. Target the June 2026 quarterly cycle</li>
-            <li>Your LOI must demonstrate: 5+ years of programmatic work, strong M&amp;E framework, and alignment with one of their core themes (WASH, nutrition, digital inclusion, tribal development)</li>
-            <li>Review the <strong>tatatrusts.org/list-of-partners</strong> page — if your geography or approach overlaps with a current partner, consider a co-application or introduction via that org</li>
-            <li>Tata Trusts prefers deep, long-term partnerships over one-off projects — frame your LOI around a 3–5 year transformation vision</li>
-          </ul>
-        </div>
-        <div class="guidance-section">
-          <div class="guidance-heading">🔗 Learn More</div>
-          <div class="learn-links">
-            <a class="learn-link" href="https://www.tatatrusts.org/list-of-partners" target="_blank">→ Tata Trusts List of Partners — see who they already fund</a>
-            <a class="learn-link" href="https://horizons.tatatrusts.org/2021/december/tata-trusts-horizons-partnerships-ngos-nonprofits.html" target="_blank">→ Tata Trusts Horizons: How they approach NGO partnerships</a>
-            <a class="learn-link" href="https://ngosindia.com/sir-ratan-tata-trust/" target="_blank">→ Sir Ratan Tata Trust overview and contact (NGOs India)</a>
-          </div>
-        </div>
-        <div class="guidance-section">
-          <div class="guidance-heading">🏆 Benchmark NGOs to Study</div>
-          <div class="benchmark-list">
-            <div class="benchmark-item">
-              <div class="benchmark-name">PRADAN — Pan-India (Jharkhand, MP, Rajasthan focus)</div>
-              <div class="benchmark-desc">Long-term Tata Trusts partner for rural livelihoods and watershed. Among India's most respected development NGOs. Study their Theory of Change documentation and M&amp;E approach for grant proposals.</div>
-            </div>
-            <div class="benchmark-item">
-              <div class="benchmark-name">Sadguru Water and Development Foundation — Gujarat/Rajasthan/MP</div>
-              <div class="benchmark-desc">Tata Trusts' longstanding WASH partner in tribal areas since 1976. Benchmark for water access programme design and community-managed infrastructure models.</div>
-            </div>
-            <div class="benchmark-item">
-              <div class="benchmark-name">Jaldhaara Foundation — Water access partner</div>
-              <div class="benchmark-desc">Co-implements Tata Water Mission with TATA companies. Good model for public-private-NGO collaboration proposals that Tata Trusts particularly values.</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="card-footer">
-        <a class="source-link" href="https://www.tatatrusts.org" target="_blank">🔗 tatatrusts.org</a>
-        <span class="edit-icon">✏️ All fields editable</span>
-      </div>
-    </div>
+        function filterByCategory(category) {
+            const buttons = document.querySelectorAll('.filter-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
 
-    <!-- CARD: Gates Foundation -->
-    <div class="card" data-tags="health nutrition agri food security gender">
-      <div class="card-top">
-        <div class="card-title" contenteditable="true">Bill &amp; Melinda Gates Foundation — Grand Challenges India</div>
-        <span class="status-badge status-upcoming">🔜 Upcoming</span>
-      </div>
-      <div class="card-meta">
-        <div class="meta-item"><div class="meta-label">Funding Amount</div><div class="meta-value amount" contenteditable="true">USD 100K – USD 1M (Phase I/II)</div></div>
-        <div class="meta-item"><div class="meta-label">Deadline</div><div class="meta-value" contenteditable="true">Q3 2026 (expected announcement)</div></div>
-        <div class="meta-item"><div class="meta-label">Funding Type</div><div class="meta-value" contenteditable="true">Innovation Grant (FCRA required)</div></div>
-        <div class="meta-item"><div class="meta-label">Geography</div><div class="meta-value" contenteditable="true">India (all states)</div></div>
-      </div>
-      <div class="eligibility-block">
-        <div class="eligibility-label">Eligibility Requirements</div>
-        <div class="eligibility-text" contenteditable="true">Indian research institutions, social enterprises, NGOs with FCRA registration. Focus on innovative solutions for global health, nutrition, agriculture, gender equity, and financial inclusion. Both early-stage ideas (Phase I, ~USD 100K) and validated solutions (Phase II, up to USD 1M) considered. Collaboration with government preferred.</div>
-      </div>
-      <div class="causes-row">
-        <span class="cause-tag" contenteditable="true">Global Health</span>
-        <span class="cause-tag" contenteditable="true">Nutrition Innovation</span>
-        <span class="cause-tag" contenteditable="true">AgriTech</span>
-        <span class="cause-tag" contenteditable="true">Financial Inclusion</span>
-      </div>
-      <button class="guidance-toggle" onclick="toggleGuidance(this)">🎯 Show Guidance, Links &amp; Benchmarks ▼</button>
-      <div class="guidance-panel">
-        <div class="guidance-section">
-          <div class="guidance-heading">✅ Recommended Next Steps</div>
-          <ul class="guidance-steps">
-            <li>Grand Challenges India is co-administered by <strong>BIRAC (birac.nic.in)</strong> — register on BIRAC's portal and watch for the next open call announcement (expected Q3 2026)</li>
-            <li>Ensure <strong>FCRA registration</strong> is current — Gates Foundation grants are foreign contributions and FCRA is non-negotiable</li>
-            <li>Phase I grants (~USD 100K) are for early-stage innovative ideas — prepare a 2-page concept note with your innovation hypothesis and expected proof-of-concept outcomes</li>
-            <li>Gates India focuses on: primary health, sanitation, agriculture + nutrition linkage, and financial inclusion. Align your proposal to <strong>one specific, measurable problem</strong></li>
-          </ul>
-        </div>
-        <div class="guidance-section">
-          <div class="guidance-heading">🔗 Learn More</div>
-          <div class="learn-links">
-            <a class="learn-link" href="https://www.birac.nic.in/desc_new.php?id=103" target="_blank">→ Grand Challenges India — BIRAC official page (apply here)</a>
-            <a class="learn-link" href="https://www.gatesfoundation.org/our-work/places/india" target="_blank">→ Gates Foundation India — current priorities and programmes</a>
-            <a class="learn-link" href="https://www.fundsforngos.org/gates-foundation/gates-foundation-grand-challenges-global-health-explorations/" target="_blank">→ Gates Grand Challenges Explorations guide (fundsforNGOs)</a>
-          </div>
-        </div>
-        <div class="guidance-section">
-          <div class="guidance-heading">🏆 Benchmark NGOs to Study</div>
-          <div class="benchmark-list">
-            <div class="benchmark-item">
-              <div class="benchmark-name">Antara Foundation — Rajasthan &amp; MP</div>
-              <div class="benchmark-desc">Gates-aligned maternal health org running the Akshada programme. Study their data-driven, tech-augmented approach to RMNCH — the exact type of "scalable innovation" Gates funds.</div>
-            </div>
-            <div class="benchmark-item">
-              <div class="benchmark-name">Khushi Baby — Rajasthan</div>
-              <div class="benchmark-desc">Digital health startup turned social enterprise; uses NFC wristbands for immunisation tracking. Classic Gates-style innovation grant recipient. Benchmark for framing a tech-health proposal.</div>
-            </div>
-            <div class="benchmark-item">
-              <div class="benchmark-name">IIT Bombay / UNSW Australia (knowledge partners with Tata Water Mission / Gates)</div>
-              <div class="benchmark-desc">Gates often funds NGO–academic partnerships. If you have an innovative idea, consider co-applying with an IIT or AIIMS — it significantly strengthens the application.</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="card-footer">
-        <a class="source-link" href="https://gcgh.grandchallenges.org/challenges" target="_blank">🔗 grandchallenges.org</a>
-        <span class="edit-icon">✏️ All fields editable</span>
-      </div>
-    </div>
+            const cards = document.querySelectorAll('.grant-card');
+            cards.forEach(card => {
+                if (category === 'all') {
+                    card.style.display = 'block';
+                } else {
+                    const cardCategory = card.getAttribute('data-category');
+                    card.style.display = cardCategory === category ? 'block' : 'none';
+                }
+            });
+        }
 
-  </div><!-- /cards-grid -->
-</div><!-- /section found -->
+        function filterAndSearch() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const cards = document.querySelectorAll('.grant-card');
 
+            cards.forEach(card => {
+                const title = card.querySelector('.card-title').textContent.toLowerCase();
+                const description = card.querySelector('.card-description').textContent.toLowerCase();
+                const tags = Array.from(card.querySelectorAll('.tag')).map(t => t.textContent.toLowerCase()).join(' ');
 
-<!-- ══════════════════════════════════════════
-     SECTION 3: UN & MULTILATERAL
-═══════════════════════════════════════════ -->
-<div class="section" data-section="un">
-  <div class="section-header">
-    <div class="section-icon" style="background:#f3e8ff">🌐</div>
-    <span class="section-title">UN &amp; Multilateral Agencies</span>
-    <span class="section-count">3 opportunities</span>
-    <span class="section-toggle" onclick="toggleSection(this)">▲ Collapse</span>
-  </div>
-  <div class="cards-grid section-body">
+                const matches = title.includes(searchTerm) || description.includes(searchTerm) || tags.includes(searchTerm);
+                card.style.display = matches ? 'block' : 'none';
+            });
+        }
 
-    <!-- CARD: GEF SGP -->
-    <div class="card" data-tags="environment climate biodiversity community">
-      <div class="card-top">
-        <div class="card-title" contenteditable="true">UNDP/GEF Small Grants Programme — Community Environmental Projects</div>
-        <span class="status-badge status-new">🆕 New Cycle</span>
-      </div>
-      <div class="card-meta">
-        <div class="meta-item"><div class="meta-label">Funding Amount</div><div class="meta-value amount" contenteditable="true">Up to USD 50,000 per project</div></div>
-        <div class="meta-item"><div class="meta-label">Deadline</div><div class="meta-value deadline" contenteditable="true">Rolling (OP8 cycle, 2026)</div></div>
-        <div class="meta-item"><div class="meta-label">Funding Type</div><div class="meta-value" contenteditable="true">Multilateral Grant (FCRA required)</div></div>
-        <div class="meta-item"><div class="meta-label">Application Via</div><div class="meta-value" contenteditable="true">undp.org/papp (India country office)</div></div>
-      </div>
-      <div class="eligibility-block">
-        <div class="eligibility-label">Eligibility Requirements</div>
-        <div class="eligibility-text" contenteditable="true">NGOs, community-based organisations, and cooperatives working on climate change mitigation/adaptation, biodiversity conservation, land degradation, or international waters. Must demonstrate community participation. FCRA registration required for Indian civil society orgs. Maximum grant USD 50,000; co-funding encouraged but not mandatory.</div>
-      </div>
-      <div class="causes-row">
-        <span class="cause-tag" contenteditable="true">Climate Action</span>
-        <span class="cause-tag" contenteditable="true">Biodiversity</span>
-        <span class="cause-tag" contenteditable="true">Land Restoration</span>
-        <span class="cause-tag" contenteditable="true">Community Resilience</span>
-      </div>
-      <button class="guidance-toggle" onclick="toggleGuidance(this)">🎯 Show Guidance, Links &amp; Benchmarks ▼</button>
-      <div class="guidance-panel">
-        <div class="guidance-section">
-          <div class="guidance-heading">✅ Recommended Next Steps</div>
-          <ul class="guidance-steps">
-            <li>Visit <strong>sgp-india.org</strong> and contact the National Host Institution — <strong>CEE India (Centre for Environment Education)</strong> — which coordinates all 400+ NGO/CBO applications across India</li>
-            <li>Ensure FCRA registration is active — GEF grants are foreign contributions. If your org lacks FCRA, partner with an FCRA-registered fiscal sponsor for this grant</li>
-            <li>Your project must fit one of the GEF focal areas: biodiversity, climate change, land degradation, sustainable forest management, or international waters — write your proposal in this language</li>
-            <li>Community co-contribution (labour, local knowledge, in-kind) is expected — document this in your budget as it strengthens the application considerably</li>
-          </ul>
-        </div>
-        <div class="guidance-section">
-          <div class="guidance-heading">🔗 Learn More</div>
-          <div class="learn-links">
-            <a class="learn-link" href="https://sgp-india.org/" target="_blank">→ SGP India — National Programme page (apply here)</a>
-            <a class="learn-link" href="https://www.ceeindia.org/gef-undp-small-grants-programme-india-facilitating-ngo-and-community-initiatives" target="_blank">→ CEE India — GEF-UNDP SGP India overview and contacts</a>
-            <a class="learn-link" href="https://sgp.undp.org/about-us-157/how-to-apply.html" target="_blank">→ UNDP SGP: How to Apply (global guidance)</a>
-          </div>
-        </div>
-        <div class="guidance-section">
-          <div class="guidance-heading">🏆 Benchmark NGOs to Study</div>
-          <div class="benchmark-list">
-            <div class="benchmark-item">
-              <div class="benchmark-name">CEE India (Centre for Environment Education) — Gujarat / Pan-India</div>
-              <div class="benchmark-desc">The National Host Institution itself. They have managed 443 SGP projects over 5 operational phases. Their public case studies on ceeindia.org are the best source of real proposal benchmarks.</div>
-            </div>
-            <div class="benchmark-item">
-              <div class="benchmark-name">Community-based organisations in semi-arid &amp; coastal zones</div>
-              <div class="benchmark-desc">SGP India has strong presence in Maharashtra, Gujarat, Rajasthan, and the Northeast. Search "GEF SGP India project + [your state]" for local NGO examples on the SGP global database (sgp.undp.org).</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="card-footer">
-        <a class="source-link" href="https://www.undp.org/papp" target="_blank">🔗 undp.org/papp</a>
-        <span class="edit-icon">✏️ All fields editable</span>
-      </div>
-    </div>
+        function toggleSection(header) {
+            const section = header.closest('.section');
+            section.classList.toggle('collapsed');
+            const toggle = header.querySelector('.section-toggle');
+            toggle.classList.toggle('collapsed');
+        }
 
-    <!-- CARD: UN Women Trust Fund -->
-    <div class="card" data-tags="gender violence women girls safety">
-      <div class="card-top">
-        <div class="card-title" contenteditable="true">UN Women — Trust Fund to End Violence Against Women &amp; Girls</div>
-        <span class="status-badge status-upcoming">🔜 2026-27 Call</span>
-      </div>
-      <div class="card-meta">
-        <div class="meta-item"><div class="meta-label">Funding Amount</div><div class="meta-value amount" contenteditable="true">USD 20M pool across 2 cohorts</div></div>
-        <div class="meta-item"><div class="meta-label">Deadline</div><div class="meta-value" contenteditable="true">2026 cohort call (monitor untf.unwomen.org)</div></div>
-        <div class="meta-item"><div class="meta-label">Funding Type</div><div class="meta-value" contenteditable="true">Thematic Grant (FCRA required)</div></div>
-        <div class="meta-item"><div class="meta-label">Application Via</div><div class="meta-value" contenteditable="true">untf.unwomen.org</div></div>
-      </div>
-      <div class="eligibility-block">
-        <div class="eligibility-label">Eligibility Requirements</div>
-        <div class="eligibility-text" contenteditable="true">Civil society organisations and women's rights groups. Applicants must demonstrate at least 3 years of work addressing gender-based violence. Indian NGOs require FCRA registration. Focus on prevention, survivor services, institutional reform, or changing social norms. Multi-country or national scale preferred.</div>
-      </div>
-      <div class="causes-row">
-        <span class="cause-tag" contenteditable="true">Gender-Based Violence</span>
-        <span class="cause-tag" contenteditable="true">Women's Rights</span>
-        <span class="cause-tag" contenteditable="true">Survivor Support</span>
-        <span class="cause-tag" contenteditable="true">Social Norms Change</span>
-      </div>
-      <button class="guidance-toggle" onclick="toggleGuidance(this)">🎯 Show Guidance, Links &amp; Benchmarks ▼</button>
-      <div class="guidance-panel">
-        <div class="guidance-section">
-          <div class="guidance-heading">✅ Recommended Next Steps</div>
-          <ul class="guidance-steps">
-            <li>Sign up for email alerts at <strong>untf.unwomen.org</strong> — the 2026 cohort call-for-proposals will be announced there first. Do not wait for the deadline to begin preparation</li>
-            <li>Ensure <strong>FCRA registration</strong> is active and renewal is not due within the grant period — UN Trust Fund will not disburse to orgs with lapsed FCRA</li>
-            <li>Document <strong>3+ years of GBV-specific work</strong> with data: number of survivors served, legal/psychosocial services provided, policy advocacy outcomes</li>
-            <li>UN Trust Fund prioritises <strong>women-led organisations</strong> and orgs that have NOT previously received UNTF funding — mention this positioning explicitly in your application</li>
-          </ul>
-        </div>
-        <div class="guidance-section">
-          <div class="guidance-heading">🔗 Learn More</div>
-          <div class="learn-links">
-            <a class="learn-link" href="https://untf.unwomen.org/en/grant-giving/call-for-proposals" target="_blank">→ UNTF Call for Proposals — monitor this page for 2026 cohort</a>
-            <a class="learn-link" href="https://www.unwomen.org/en/trust-funds/un-trust-fund-to-end-violence-against-women" target="_blank">→ UN Women UNTF Overview — programme scope and past grantees</a>
-            <a class="learn-link" href="https://untf.unwomen.org/sites/default/files/2025-09/untfevawg_2025_call_for_proposals_eng_compressed-2.pdf" target="_blank">→ 2025 Call for Proposals PDF — study for 2026 format</a>
-          </div>
-        </div>
-        <div class="guidance-section">
-          <div class="guidance-heading">🏆 Benchmark NGOs to Study</div>
-          <div class="benchmark-list">
-            <div class="benchmark-item">
-              <div class="benchmark-name">Breakthrough India — Pan-India</div>
-              <div class="benchmark-desc">Ran the "Ring the Bell" campaign (UNTF-linked) that reached 130M+ people in India. Now a leading voice on gender norms change. Study their behaviour-change communication approach to GBV prevention proposals.</div>
-            </div>
-            <div class="benchmark-item">
-              <div class="benchmark-name">CREA (Creating Resources for Empowerment in Action) — Delhi</div>
-              <div class="benchmark-desc">International women's rights org based in India; recipient of multiple UN Women-aligned grants. Strong model for combining legal rights, sexual health, and movement building in a single proposal narrative.</div>
-            </div>
-            <div class="benchmark-item">
-              <div class="benchmark-name">Jagori — Delhi</div>
-              <div class="benchmark-desc">Feminist resource centre with 35+ years on women's safety, GBV documentation, and survivor support. Benchmark for survivor-centred service delivery proposals — exactly what UNTF funds.</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="card-footer">
-        <a class="source-link" href="https://untf.unwomen.org/en/grant-giving/call-for-proposals" target="_blank">🔗 untf.unwomen.org</a>
-        <span class="edit-icon">✏️ All fields editable</span>
-      </div>
-    </div>
+        function toggleGuidance(btn) {
+            const panel = btn.nextElementSibling;
+            const isOpen = panel.style.display === 'block';
+            panel.style.display = isOpen ? 'none' : 'block';
+            btn.textContent = isOpen ? '🎯 Show Guidance, Links & Benchmarks ▼' : '🎯 Hide Guidance & Benchmarks ▲';
+        }
 
-    <!-- CARD: CIVICUS -->
-    <div class="card" data-tags="digital civil society technology advocacy">
-      <div class="card-top">
-        <div class="card-title" contenteditable="true">CIVICUS Digital Action Lab — Cohort 3 (2026)</div>
-        <span class="status-badge status-new">🆕 Open Now</span>
-      </div>
-      <div class="card-meta">
-        <div class="meta-item"><div class="meta-label">Funding Amount</div><div class="meta-value amount" contenteditable="true">Up to USD 20,000 per org</div></div>
-        <div class="meta-item"><div class="meta-label">Deadline</div><div class="meta-value deadline" contenteditable="true">Check civicus.org — April/May 2026</div></div>
-        <div class="meta-item"><div class="meta-label">Funding Type</div><div class="meta-value" contenteditable="true">Capacity + Grant (FCRA required)</div></div>
-        <div class="meta-item"><div class="meta-label">Application Via</div><div class="meta-value" contenteditable="true">civicus.org/digital-action-lab</div></div>
-      </div>
-      <div class="eligibility-block">
-        <div class="eligibility-label">Eligibility Requirements</div>
-        <div class="eligibility-text" contenteditable="true">Civil society organisations with a digital advocacy or tech-for-good programme. Grant covers digital tools, campaigns, and capacity building. Open to global applicants including India. Must demonstrate clear theory of change for digital activism or civic tech. FCRA required for Indian recipients of international grants.</div>
-      </div>
-      <div class="causes-row">
-        <span class="cause-tag" contenteditable="true">Civic Tech</span>
-        <span class="cause-tag" contenteditable="true">Digital Advocacy</span>
-        <span class="cause-tag" contenteditable="true">Civil Society</span>
-        <span class="cause-tag" contenteditable="true">Technology Access</span>
-      </div>
-      <button class="guidance-toggle" onclick="toggleGuidance(this)">🎯 Show Guidance, Links &amp; Benchmarks ▼</button>
-      <div class="guidance-panel">
-        <div class="guidance-section">
-          <div class="guidance-heading">✅ Recommended Next Steps</div>
-          <ul class="guidance-steps">
-            <li>Check <strong>civicus.org/digital-action-lab</strong> now for the Cohort 3 deadline — applications for April/May 2026 may still be open</li>
-            <li>Prepare a clear <strong>digital theory of change</strong>: what specific civic or social problem will you address digitally, and how will USD 20,000 in tools + capacity enable measurable change?</li>
-            <li>FCRA registration required to receive international grant funds — confirm this is in order before applying</li>
-            <li>This grant includes <strong>capacity building support</strong> (not just cash) — frame your application around what your team will learn, not just what you'll build</li>
-          </ul>
-        </div>
-        <div class="guidance-section">
-          <div class="guidance-heading">🔗 Learn More</div>
-          <div class="learn-links">
-            <a class="learn-link" href="https://opportunitiesforyouth.org/2026/04/03/civicus-digital-action-lab-cohort-3-2026-grants-of-up-to-20000-for-civil-society-organisations/" target="_blank">→ CIVICUS Digital Action Lab Cohort 3 — full details (Opportunities for Youth)</a>
-            <a class="learn-link" href="https://www.civicus.org" target="_blank">→ CIVICUS World Alliance — main site</a>
-          </div>
-        </div>
-        <div class="guidance-section">
-          <div class="guidance-heading">🏆 Benchmark NGOs to Study</div>
-          <div class="benchmark-list">
-            <div class="benchmark-item">
-              <div class="benchmark-name">iSPIRT Foundation — Bengaluru</div>
-              <div class="benchmark-desc">India's leading digital public goods think-tank. Not a grantee, but their work on open civic tech (UPI, ABDM, Diksha) is the gold standard for digital-for-social-change in India — benchmark for framing your digital theory of change.</div>
-            </div>
-            <div class="benchmark-item">
-              <div class="benchmark-name">DataKind Bangalore / Civis Analytics India</div>
-              <div class="benchmark-desc">Data-for-good organisations working with Indian civil society on digital tools. Good examples of small tech-enabled social sector organisations that match the CIVICUS grant profile.</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="card-footer">
-        <a class="source-link" href="https://www.civicus.org" target="_blank">🔗 civicus.org</a>
-        <span class="edit-icon">✏️ All fields editable</span>
-      </div>
-    </div>
+        function toggleEdit() {
+            editMode = !editMode;
+            const editBar = document.getElementById('editModeBar');
+            const editableElements = document.querySelectorAll('[contenteditable="true"]');
 
-  </div><!-- /cards-grid -->
-</div><!-- /section un -->
+            if (editMode) {
+                editBar.classList.remove('hidden');
+                editBar.innerHTML = '✏️ Editing is ON<button class="toggle-edit-btn" onclick="toggleEdit()">Turn OFF</button>';
+                editableElements.forEach(el => el.setAttribute('contenteditable', 'true'));
+            } else {
+                editBar.classList.add('hidden');
+                editableElements.forEach(el => el.setAttribute('contenteditable', 'false'));
+            }
+        }
 
+        function addGrantCard() {
+            const container = event.target.closest('section').querySelector('.cards-grid');
+            const newCard = document.createElement('div');
+            newCard.className = 'grant-card';
+            newCard.setAttribute('data-status', 'new');
+            newCard.innerHTML = `
+                <div class="card-header">
+                    <h3 class="card-title" contenteditable="true">New Grant Opportunity</h3>
+                    <span class="status-badge status-new">🆕 New</span>
+                </div>
+                <div class="card-meta">
+                    <div class="meta-item">
+                        <span class="meta-label">Amount</span>
+                        <span class="meta-value amount" contenteditable="true">To be determined</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">Deadline</span>
+                        <span class="meta-value deadline" contenteditable="true">TBD</span>
+                    </div>
+                </div>
+                <div class="card-description" contenteditable="true">Add your description here...</div>
+                <div class="tags">
+                    <span class="tag">New</span>
+                </div>
+                <button class="guidance-toggle" onclick="toggleGuidance(this)">🎯 Show Guidance, Links & Benchmarks ▼</button>
+                <div class="guidance-panel">
+                    <div class="guidance-section">
+                        <div class="guidance-section-title">✅ Recommended Next Steps</div>
+                        <ul class="guidance-steps">
+                            <li>Step 1</li>
+                            <li>Step 2</li>
+                        </ul>
+                    </div>
+                </div>
+            `;
+            container.appendChild(newCard);
+        }
 
-<!-- ══════════════════════════════════════════
-     SECTION 4: IMPACT INVESTING & SOCIAL ENTERPRISE
-═══════════════════════════════════════════ -->
-<div class="section" data-section="impact">
-  <div class="section-header">
-    <div class="section-icon" style="background:#fef3c7">📈</div>
-    <span class="section-title">Impact Investing &amp; Social Enterprise</span>
-    <span class="section-count">1 opportunity</span>
-    <span class="section-toggle" onclick="toggleSection(this)">▲ Collapse</span>
-  </div>
-  <div class="cards-grid section-body">
-
-    <!-- CARD: SIDBI -->
-    <div class="card" data-tags="microfinance social enterprise blended finance startup">
-      <div class="card-top">
-        <div class="card-title" contenteditable="true">SIDBI — Capacity Building Fund for SSE-Listed Social Enterprises</div>
-        <span class="status-badge status-new">🆕 Active</span>
-      </div>
-      <div class="card-meta">
-        <div class="meta-item"><div class="meta-label">Funding Amount</div><div class="meta-value amount" contenteditable="true">₹100Cr total pool (draw-down grants)</div></div>
-        <div class="meta-item"><div class="meta-label">Deadline</div><div class="meta-value" contenteditable="true">Ongoing — apply via SSE listing</div></div>
-        <div class="meta-item"><div class="meta-label">Funding Type</div><div class="meta-value" contenteditable="true">Capacity Building Grant + Blended Finance</div></div>
-        <div class="meta-item"><div class="meta-label">Application Via</div><div class="meta-value" contenteditable="true">sidbi.in / BSE-NSE SSE segment</div></div>
-      </div>
-      <div class="eligibility-block">
-        <div class="eligibility-label">Eligibility Requirements</div>
-        <div class="eligibility-text" contenteditable="true">Non-profits and for-profit social enterprises eligible to list on India's Social Stock Exchange (SSE). Grants support organisations navigating SSE registration, SEBI compliance, impact measurement, and investor readiness. Capacity Building Fund jointly managed by NABARD and SIDBI with ₹100Cr corpus. Particularly suited to organisations preparing for ZCZP instrument issuance.</div>
-      </div>
-      <div class="causes-row">
-        <span class="cause-tag" contenteditable="true">Social Enterprise</span>
-        <span class="cause-tag" contenteditable="true">Investor Readiness</span>
-        <span class="cause-tag" contenteditable="true">Impact Measurement</span>
-        <span class="cause-tag" contenteditable="true">All Causes</span>
-      </div>
-      <button class="guidance-toggle" onclick="toggleGuidance(this)">🎯 Show Guidance, Links &amp; Benchmarks ▼</button>
-      <div class="guidance-panel">
-        <div class="guidance-section">
-          <div class="guidance-heading">✅ Recommended Next Steps</div>
-          <ul class="guidance-steps">
-            <li>Confirm SSE eligibility: 80G + 12A + ≥3 years operations + ≥₹50L annual expenditure + ≥₹10L raised in the past FY — if you don't yet qualify, use this year to reach the thresholds</li>
-            <li>Contact the <strong>BSE SSE desk</strong> (bsesocialstockexchange@bseindia.com) or <strong>NSE SSE desk</strong> for the NPO listing information kit — it's free to request and contains all compliance documents</li>
-            <li>Apply to <strong>NABARD/SIDBI Capacity Building Fund</strong> before attempting SSE listing — this ₹100Cr fund exists specifically to cover the cost of compliance, auditor fees, and investor readiness for organisations new to the SSE</li>
-            <li>Engage a <strong>SEBI-registered social auditor</strong> (list on sebi.gov.in) to begin drafting your Social Impact Scorecard — this will take 2–3 months and is required post-listing</li>
-          </ul>
-        </div>
-        <div class="guidance-section">
-          <div class="guidance-heading">🔗 Learn More</div>
-          <div class="learn-links">
-            <a class="learn-link" href="https://www.ipoplatform.com/social-stock-exchange/listed-npos-and-registered-npos-on-bse-sse-and-nse-sse" target="_blank">→ Complete list of SSE-listed NPOs on BSE &amp; NSE (IPO Platform)</a>
-            <a class="learn-link" href="https://www.ipoplatform.com/social-stock-exchange/registration-of-npo-on-sse" target="_blank">→ Step-by-step NPO SSE registration process</a>
-            <a class="learn-link" href="https://news.fundsforngos.org/2026/03/26/4-key-lessons-from-indias-social-stock-exchange-for-impact-investing/" target="_blank">→ 4 Key Lessons from India's SSE — March 2026 (fundsforNGOs)</a>
-            <a class="learn-link" href="https://www.weforum.org/stories/2026/03/lessons-trading-impact-india-social-stock-exchange/" target="_blank">→ WEF: Lessons on trading impact from India's SSE (March 2026)</a>
-          </div>
-        </div>
-        <div class="guidance-section">
-          <div class="guidance-heading">🏆 Benchmark NGOs to Study</div>
-          <div class="benchmark-list">
-            <div class="benchmark-item">
-              <div class="benchmark-name">Swades Foundation — Rural Maharashtra</div>
-              <div class="benchmark-desc">The definitive SSE benchmark: first to raise ₹10Cr via ZCZP bonds. Their full disclosure documents, impact scorecard, and ZCZP issuance materials are publicly available on BSE SSE — download and study them carefully.</div>
-            </div>
-            <div class="benchmark-item">
-              <div class="benchmark-name">SGBS Microfinance — First-ever SSE listed NGO (2023)</div>
-              <div class="benchmark-desc">First NGO to complete SSE listing in India. Study their registration timeline, compliance structure, and reporting format from the BSE SSE public filings — this is your registration roadmap.</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="card-footer">
-        <a class="source-link" href="https://www.sidbi.in" target="_blank">🔗 sidbi.in</a>
-        <span class="edit-icon">✏️ All fields editable</span>
-      </div>
-    </div>
-
-  </div><!-- /cards-grid -->
-
-  <!-- Add Grant placeholder -->
-  <div style="margin-top:16px">
-    <button class="add-card-btn" onclick="addGrantCard('impact')">+ Add a grant opportunity</button>
-  </div>
-</div><!-- /section impact -->
-
-
-<!-- ══ FOOTER ══ -->
-<footer>
-  <div class="footer-grid">
-    <div>
-      <h4>📌 Key Compliance Reminders</h4>
-      <p>For <strong>government grants</strong>: DARPAN registration on NGO-DARPAN portal is mandatory. eAnudaan portal for MSJE grants.</p>
-      <p style="margin-top:6px">For <strong>foreign grants</strong>: FCRA registration (or FCRA prior permission) is required under FCRA 2010. Renewed FCRA every 5 years.</p>
-      <p style="margin-top:6px">For <strong>CSR funding</strong>: CSR-1 registration on MCA portal + 12A &amp; 80G mandatory from July 2025 onward.</p>
-    </div>
-    <div>
-      <h4>🔗 Key Portals to Bookmark</h4>
-      <p><a href="https://ngodarpan.gov.in">NGO-DARPAN</a> · <a href="https://grants-msje.gov.in">eAnudaan (MSJE)</a> · <a href="https://ngo.tribal.gov.in">Tribal Affairs Portal</a></p>
-      <p style="margin-top:4px"><a href="https://www2.fundsforngos.org/tag/india/">FundsforNGOs India</a> · <a href="https://ngobox.org">NGOBox</a> · <a href="https://andpurpose.world/grants/">AndPurpose Grants</a></p>
-      <p style="margin-top:4px"><a href="https://www.csrbox.org">CSRBOX</a> · <a href="https://indiainvestmentgrid.gov.in/csr">India Investment Grid CSR</a></p>
-      <p style="margin-top:10px; color:#64748b; font-size:0.7rem;">⚠️ This report is auto-generated daily using AI-powered web intelligence. Always verify deadlines and eligibility directly with the funding body before applying. Grant landscapes change rapidly.</p>
-    </div>
-  </div>
-</footer>
-
-<!-- ══ JAVASCRIPT ══ -->
-<script>
-  // Edit mode toggle
-  let editMode = true;
-  function toggleEdit() {
-    editMode = !editMode;
-    const fields = document.querySelectorAll('[contenteditable]');
-    const bar = document.getElementById('editBar');
-    const btn = bar.querySelector('button');
-    fields.forEach(f => f.contentEditable = editMode ? 'true' : 'false');
-    if (editMode) {
-      bar.innerHTML = '✏️ <strong>Edit Mode is ON</strong> — click any field to edit it directly. <button class="edit-toggle-btn off" onclick="toggleEdit()">Disable Editing</button>';
-    } else {
-      bar.innerHTML = '🔒 <strong>Edit Mode is OFF</strong> — report is read-only. <button class="edit-toggle-btn" onclick="toggleEdit()">Enable Editing</button>';
-    }
-  }
-
-  // Section collapse
-  function toggleSection(btn) {
-    const body = btn.closest('.section-header').nextElementSibling;
-    const isCollapsed = body.style.display === 'none';
-    body.style.display = isCollapsed ? 'grid' : 'none';
-    btn.textContent = isCollapsed ? '▲ Collapse' : '▼ Expand';
-  }
-
-  // Filter by section
-  function filterAll(btn) {
-    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    document.querySelectorAll('.section').forEach(s => s.style.display = '');
-  }
-
-  function filterSection(sectionKey, btn) {
-    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    document.querySelectorAll('.section').forEach(s => {
-      s.style.display = s.dataset.section === sectionKey ? '' : 'none';
-    });
-  }
-
-  // Search
-  function searchGrants(query) {
-    const q = query.toLowerCase();
-    document.querySelectorAll('.card').forEach(card => {
-      const text = card.textContent.toLowerCase();
-      card.style.display = text.includes(q) ? '' : 'none';
-    });
-    if (!q) {
-      document.querySelectorAll('.section').forEach(s => s.style.display = '');
-    }
-  }
-
-  // Guidance panel toggle
-  function toggleGuidance(btn) {
-    const panel = btn.nextElementSibling;
-    const isOpen = panel.style.display === 'block';
-    panel.style.display = isOpen ? 'none' : 'block';
-    btn.textContent = isOpen ? '🎯 Show Guidance, Links & Benchmarks ▼' : '🎯 Hide Guidance & Benchmarks ▲';
-  }
-
-  // Add new grant card
-  function addGrantCard(section) {
-    const grid = document.querySelector(`[data-section="${section}"] .cards-grid`);
-    const card = document.createElement('div');
-    card.className = 'card';
-    card.dataset.tags = '';
-    card.innerHTML = `
-      <div class="card-top">
-        <div class="card-title" contenteditable="true">New Grant Opportunity — Click to Edit Title</div>
-        <span class="status-badge status-open">✅ Open</span>
-      </div>
-      <div class="card-meta">
-        <div class="meta-item"><div class="meta-label">Funding Amount</div><div class="meta-value amount" contenteditable="true">Enter amount</div></div>
-        <div class="meta-item"><div class="meta-label">Deadline</div><div class="meta-value deadline" contenteditable="true">Enter deadline</div></div>
-        <div class="meta-item"><div class="meta-label">Funding Type</div><div class="meta-value" contenteditable="true">Enter type</div></div>
-        <div class="meta-item"><div class="meta-label">Application Via</div><div class="meta-value" contenteditable="true">Enter portal</div></div>
-      </div>
-      <div class="eligibility-block">
-        <div class="eligibility-label">Eligibility Requirements</div>
-        <div class="eligibility-text" contenteditable="true">Enter eligibility requirements here...</div>
-      </div>
-      <div class="causes-row">
-        <span class="cause-tag" contenteditable="true">Cause Tag</span>
-      </div>
-      <div class="card-footer">
-        <a class="source-link" href="#" contenteditable="true">🔗 Enter source URL</a>
-        <span class="edit-icon" onclick="this.closest('.card').remove()">🗑️ Remove</span>
-      </div>`;
-    grid.insertBefore(card, grid.lastElementChild);
-  }
-</script>
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // Edit mode is ON by default
+            const editBar = document.getElementById('editModeBar');
+            editBar.classList.remove('hidden');
+        });
+    </script>
 
 </body>
 </html>
